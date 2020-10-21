@@ -1,4 +1,4 @@
-# NostalgiaIO
+# ~~NostalgiaIO~~ WIP, not working yet, come back later :p
 
 Arcade cab Nostalgia control panel on PC
 
