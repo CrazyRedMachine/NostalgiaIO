@@ -1,10 +1,10 @@
 # NostalgiaIO
 
-Notes on using an arcade cab Nostalgia control panel on PC
+Arcade cab Nostalgia control panel on PC
 
 ## Firmware
 
-No need for any firmware, you can use any USB to TTL converter (for example an Arduino Uno with the RESET pin shorted to GND)
+No need for any firmware for now, you can use any USB to TTL converter (for example an Arduino Uno with the RESET pin shorted to GND)
 
 ## Pinout 
 
