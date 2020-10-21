@@ -8,9 +8,9 @@ No need for any firmware for now, you can use any USB to TTL converter (for exam
 
 ## Pinout 
 
-There's one 8 pin connector coming out of the keyboard unit.
+There's one 8 pin connector coming out of the keyboard unit. We will use only 5 of the pins from that connector
 
-### USB to TTL
+### Using an USB to TTL
 
 Color | Pin | Piano | USB to TTL
 --- | --- | --- | ---
@@ -23,7 +23,7 @@ Blue  | 5 | TXDA0 | RX
 Black | 7 | GND | GND
 . | 8 |  |
 
-### Arduino
+### Using an Arduino
 
 **Notes:** 
 - Piano RX goes to RX and TX to TX, this is not a mistake (with an Arduino used this way, RX and TX have to be swapped as they are from the atmega chip POV rather than the onboard USB to TTL chip POV)
