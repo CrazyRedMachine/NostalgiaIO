@@ -25,7 +25,9 @@ Black | 7 | GND | GND
 
 ### Arduino
 
-**Note:** Piano RX goes to RX and TX to TX, this is not a mistake (with an Arduino used this way, RX and TX have to be swapped as they are from the atmega chip POV rather than the onboard USB to TTL chip POV)
+**Notes:** 
+- Piano RX goes to RX and TX to TX, this is not a mistake (with an Arduino used this way, RX and TX have to be swapped as they are from the atmega chip POV rather than the onboard USB to TTL chip POV)
+- No need to flash any firmware on the arduino, just keeping reset shorted to gnd will hold the arduino into USB to TTL mode
 
 Color | Pin | Piano | Arduino
 --- | --- | --- | ---
