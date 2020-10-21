@@ -48,4 +48,4 @@ Set your USB serial device to COM1 and run the game
 
 ## TODO
 
-- Write a leonardo firmware so one can modeswitch between midi/keyboard or native serial mode, and spoof lamp data messages internally for general coolness
+- Write a --leonardo firmware-- forwarder binary (so that can be used on real cabs as well without rewiring anything) so one can modeswitch between midi/keyboard or native serial mode, and spoof lamp data messages internally for general coolness
