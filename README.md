@@ -44,7 +44,7 @@ You also have to connect Arduino **RST** pin to **GND**
 
 ## Usage
 
-Set your USB serial device to COM1 and run the game, or use spicetools -COMx with your com port number
+Set your USB serial device to COM1 and run the game
 
 ## TODO
 
