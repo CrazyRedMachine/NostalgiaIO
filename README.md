@@ -25,9 +25,7 @@ Black | 7 | GND | GND
 
 ### Arduino
 
-There's one 8 pin connector coming out of the keyboard unit.
-
-**Note:** Piano RX goes to RX and TX to TX, this is not a mistake (with an Arduino used this way, RX and TX have to be swapped as they are from the atmega chip POV rather than the onboard USB to TTL chip)
+**Note:** Piano RX goes to RX and TX to TX, this is not a mistake (with an Arduino used this way, RX and TX have to be swapped as they are from the atmega chip POV rather than the onboard USB to TTL chip POV)
 
 Color | Pin | Piano | Arduino
 --- | --- | --- | ---
