@@ -33,9 +33,9 @@ Color | Pin | Piano | Arduino
 --- | --- | --- | ---
 Black | 1 | GND | GND | 
 Red | 2 | +5V | +5V
-Green  | 3 | RXDA0 | RX
+Green  | 3 | RXDA0 | 0 (RX)
 . | 4 |  | 
-Blue  | 5 | TXDA0 | TX
+Blue  | 5 | TXDA0 | 1 (TX)
 . | 6 |  |
 Black | 7 | GND | GND
 . | 8 |  |
