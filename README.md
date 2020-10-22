@@ -1,6 +1,6 @@
-# ~~NostalgiaIO~~ WIP, not working yet, come back later :p
+# NostalgiaIO
 
-Arcade cab Nostalgia control panel on PC
+Tools and notes on using a Nostalgia control panel, for official cabinets and home setups
 
 ## Firmware
 
@@ -48,4 +48,6 @@ Set your USB serial device to COM1 and run the game
 
 ## TODO
 
-- Write a ~~leonardo firmware~~ forwarder binary (so that can be used on real cabs as well without rewiring anything) so one can modeswitch between midi/keyboard or native serial mode, and spoof lamp data messages internally for general coolness
+- Write a leonardo firmware so one can modeswitch between midi keyboard, pc keyboard, hid multitouch (and with light effects) to play on PC version and android games as well.
+
+- Write a forwarder binary to keypresses so that real cab can play Op3 PC version as well.
