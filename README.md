@@ -2,17 +2,15 @@
 
 Tools and notes on using a Nostalgia control panel, for official cabinets and home setups
 
-## Firmware
+## Native mode
 
-No need for any firmware for now, you can use any USB to TTL converter (for example an Arduino Uno with the RESET pin shorted to GND)
+The piano is an ACIO device, which means it uses RS232 protocol to communicate with the computer.
 
-## Pinout 
+Therfore in order to use it you need to use an RS232 to USB adapter (I'm using a Sabrent DB-9 RS-232 USB 2.0 adapter). Beware not to take a simple "USB to TTL" as this won't work (you can use such adapter if you also add a RS232 to TTL converter, see more details in the Arduino firmware section).
 
-There's one 8 pin connector coming out of the keyboard unit. We will use only 5 of the pins from that connector
+### Pinout
 
-### Using an USB to TTL
-
-Color | Pin | Piano | USB to TTL
+Color | Pin | Piano | RS232 to USB
 --- | --- | --- | ---
 Black | 1 | GND | GND | 
 Red | 2 | +5V | +5V
@@ -22,6 +20,20 @@ Blue  | 5 | TXDA0 | RX
 . | 6 |  |
 Black | 7 | GND | GND
 . | 8 |  |
+
+### Configuration
+
+You need to configure the adapter so the piano is on COM1.
+
+You also need to configure a KFCA and ICCA device on a second acio device on COM2.
+
+## Enhanced mode (Arduino firmware)
+
+The arduino can communicate with an acio device on the serial interface, but in order to do so **it needs RS232 to TTL conversion**.
+
+## Pinout 
+
+There's one 8 pin connector coming out of the keyboard unit. We will use only 5 of the pins from that connector
 
 ### Using an Arduino
 
