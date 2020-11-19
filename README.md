@@ -28,6 +28,8 @@ The arduino can communicate with an acio device on the Serial1 (pins 0 and 1) in
 
 There's one 8 pin connector coming out of the keyboard unit. We will use only 5 of the pins from that connector (2 of them to power the keyboard directly from the arduino, and the other 3 of them through the RS232 adapter) 
 
+![pinout](https://github.com/CrazyRedMachine/NostalgiaIO/blob/main/nostalgia-pinout.png?raw=true)
+
 Color | Pin | Keyboard | RS232 | TTL | Arduino
 --- | --- | --- | --- | --- | ---
 Black | 1 | GND |  | | GND
