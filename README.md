@@ -2,49 +2,49 @@
 
 Arduino Leonardo firmware for arcade Nostalgia control panel, for official cabinets and home setups
 
-## Arduino firmware
+## Features
 
-The arduino can communicate with an acio device on the serial interface, but in order to do so **it needs RS232 to TTL conversion**. I use a HW-027 rs232 to TTL adapter which is based around the MAX3232 chip.
+### ACIO (native) mode
 
-## Pinout 
+In this mode the arduino acts as a passthrough, so that the original data can interact with your device. It's useful if you modded your cab hardware and want to use the extended features for other games but still retain native compatibility with Nostalgia.
 
-There's one 8 pin connector coming out of the keyboard unit. We will use only 5 of the pins from that connector
+Note that you'll have to manually set the Arduino COM port to COM1 for it to work as the game will only look for the device there.
 
-### MAX3232 RS232 to TTL converter
+You also need to have one KFCA and one ICCC node on a second acio device on COM2 (you might use [ACreal_IO](https://github.com/Nadeflore/ACreal_IO/) for that)
 
-### Using an Arduino
+### HID Gamepad mode
 
-**TODO** Faire un diagramme de connection Piano <-> MAX3232 <-> Arduino
+In this mode the panel is a 31 button, 31 RGB HID light gamepad. It allows use with tools or other games.
+
+### Touchscreen mode
+
+In this mode the panel acts like virtual touchpresses along the bottomedge of the screen, this was mainly developped for use with "Deemo", but might work for other android games too.
+
+## Pinout
+
+The arduino can communicate with an acio device on the Serial1 (pins 0 and 1) interface, but in order to do so **it needs RS232 to TTL conversion**. I use a HW-027 rs232 to TTL adapter which is based around the MAX3232 chip and is very cheap and easy to find (amazon, aliexpress, etc..)
+
+**BEWARE**: Please use the arduino 3.3V pin to power the HW-027 adapter, as most often than not, powering the chip with 5V will cause it to overheat and stop working
+
+There's one 8 pin connector coming out of the keyboard unit. We will use only 5 of the pins from that connector (2 of them to power the keyboard directly from the arduino, and the other 3 of them through the RS232 adapter) 
+
+Color | Pin | Keyboard | RS232 | TTL | Arduino
+--- | --- | --- | --- | --- | ---
+Black | 1 | GND |  | | GND
+Red | 2 | +5V | | | +5V
+Green  | 3 | RXDA0 | <- (TX) | <- (RX) | 1 
+. | 4 |  | | |
+Blue  | 5 | TXDA0 | -> (RX) | -> (TX) | 0  
+. | 6 |  | |
+Black | 7 | GND | - (GND) | - (GND) | GND 
+. | 8 |  | |
+.| | | | + (3.3V) | +3.3V
+
+**Note:** Make sure to wire the keyboard to the RS232 side of the adapter, and the arduino to the TTL side. Use the 3.3v pin to power the MAX3232 chip **from the TTL side**.
 
 ## Usage
 
-Set your USB serial device to COM1 and run the game
-
-
-## APPENDIX : Simple mode
-
-The piano is an ACIO device, which means it uses RS232 protocol to communicate with the computer.
-
-Therefore in order to use it you need to use an RS232 to USB adapter. Beware not to take a simple "USB to TTL" as this won't work (you can use such adapter if you also add a RS232 to TTL converter, see more details in the Arduino firmware section).
-
-### Pinout
-
-Color | Pin | Piano | RS232 to USB
---- | --- | --- | ---
-Black | 1 | GND | GND | 
-Red | 2 | +5V | +5V
-Green  | 3 | RXDA0 | TX
-. | 4 |  | 
-Blue  | 5 | TXDA0 | RX
-. | 6 |  |
-Black | 7 | GND | GND
-. | 8 |  |
-
-### Configuration
-
-You need to configure the adapter so the piano is on COM1.
-
-You also need to configure a KFCA and ICCC device on a second acio device on COM2 (you might use [ACreal_IO](https://github.com/Nadeflore/ACreal_IO/) for that)
+TODO
 
 ## TODO
 
