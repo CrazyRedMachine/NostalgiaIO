@@ -1,10 +1,10 @@
 # NostalgiaIO
 
-Tools and notes on using a Nostalgia control panel, for official cabinets and home setups
+Arduino Leonardo firmware for arcade Nostalgia control panel, for official cabinets and home setups
 
-## Enhanced mode (Arduino firmware)
+## Arduino firmware
 
-The arduino can communicate with an acio device on the serial interface, but in order to do so **it needs RS232 to TTL conversion**.
+The arduino can communicate with an acio device on the serial interface, but in order to do so **it needs RS232 to TTL conversion**. I use a HW-027 rs232 to TTL adapter which is based around the MAX3232 chip.
 
 ## Pinout 
 
@@ -12,12 +12,7 @@ There's one 8 pin connector coming out of the keyboard unit. We will use only 5 
 
 ### MAX3232 RS232 to TTL converter
 
-
 ### Using an Arduino
-
-**Notes:** 
-- Piano RX goes to RX and TX to TX, this is not a mistake (with an Arduino used this way, RX and TX have to be swapped as they are from the atmega chip POV rather than the onboard USB to TTL chip POV)
-- No need to flash any firmware on the arduino, just keeping reset shorted to gnd will hold the arduino into USB to TTL mode
 
 **TODO** Faire un diagramme de connection Piano <-> MAX3232 <-> Arduino
 
