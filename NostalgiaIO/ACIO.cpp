@@ -1,4 +1,5 @@
 #include "ACIO.h"
+#define ACIO_DEBUG
 
 #define ac_io_u16(x) __builtin_bswap16(x)
 #define ac_io_u32(x) __builtin_bswap32(x)
@@ -37,7 +38,13 @@ static bool acio_send(const uint8_t *buffer, int length)
     } else {
         send_buf[send_buf_pos++] = checksum;
     }
-
+#ifdef ACIO_DEBUG
+    printf("SEND : ");
+    for (int i=0; i<send_buf_pos; i++){
+      printf("%02X ", send_buf[i]);
+    }
+    printf("\n");
+#endif
     if (Serial1.write(send_buf, send_buf_pos) != send_buf_pos) {
         Serial.println("Sending data failed");
         return false;
@@ -120,7 +127,13 @@ static int acio_receive(uint8_t *buffer, int size)
             Serial.println();
             return -1;
         }
-
+#ifdef ACIO_DEBUG
+    printf("RECV : ");
+    for (int i=0; i<recv_size; i++){
+      printf("%02X ", recv_buf[i]);
+    }
+    printf("\n");
+#endif
         return result_size;
     }
 
@@ -129,6 +142,9 @@ static int acio_receive(uint8_t *buffer, int size)
 
 bool acio_send_and_recv(struct ac_io_message *msg, int resp_size)
 {
+  #ifdef ACIO_DEBUG
+    printf("ACIO SEND AND RECV\n");
+  #endif
     msg->cmd.seq_no = acio_msg_counter++;
     int send_size = offsetof(struct ac_io_message, cmd.raw) + msg->cmd.nbytes;
 
@@ -208,7 +224,8 @@ static bool acio_get_version(uint8_t node_id, char product[4])
     if (!acio_send_and_recv(
             &msg,
             offsetof(struct ac_io_message, cmd.raw) +
-                sizeof(struct ac_io_version))) {
+                sizeof(struct ac_io_version)))
+    {
         printf("Get version of node %d failed\n", node_id);
         return false;
     }
@@ -249,7 +266,8 @@ static bool acio_start_node(uint8_t node_id)
     msg.cmd.nbytes = 0;
 
     if (!acio_send_and_recv(
-            &msg, offsetof(struct ac_io_message, cmd.raw) + 1)) {
+            &msg, offsetof(struct ac_io_message, cmd.raw) + 1))
+    {
         printf("Starting node %d failed\n", node_id);
         return false;
     }
