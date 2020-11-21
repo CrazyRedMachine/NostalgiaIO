@@ -22,7 +22,7 @@ typedef struct panb_button_state_s {
     uint8_t keypair[14];
 } panb_button_state_t;
 
-
+void panb_set_lamp_state_batch(uint8_t source[]);
 void panb_set_lamp_state(uint8_t key, color_t color);
 bool panb_send_lamp();
 bool panb_set_auto_poll();

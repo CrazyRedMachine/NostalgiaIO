@@ -11,6 +11,11 @@ void panb_set_lamp_state(uint8_t key, color_t color)
   }
 }
 
+void panb_set_lamp_state_batch(uint8_t source[])
+{
+  memcpy(lamp_state, source, 0x54);
+}
+
 bool panb_send_lamp()
 {
     struct ac_io_message msg;
