@@ -1,14 +1,11 @@
 #include "ACIO.h"
-#define ACIO_DEBUG
-
-#define ac_io_u16(x) __builtin_bswap16(x)
-#define ac_io_u32(x) __builtin_bswap32(x)
+//#define ACIO_DEBUG
 
 static uint8_t acio_msg_counter = 1;
 static uint8_t acio_node_count;
 static char acio_node_products[16][4];
 
-static bool acio_send(const uint8_t *buffer, int length)
+bool acio_send(const uint8_t *buffer, int length)
 {
     uint8_t send_buf[512];
     int send_buf_pos = 0;
@@ -53,13 +50,14 @@ static bool acio_send(const uint8_t *buffer, int length)
     return true;
 }
 
-static int acio_receive(uint8_t *buffer, int size)
+int acio_receive(uint8_t *buffer, int size)
 {
     uint8_t recv_buf[512];
     int recv_size = 0;
     int read = 0;
     uint8_t checksum = 0;
     int result_size = 0;
+    int initsize = size;
 
     /* reading a byte stream, we are getting a varying amount
        of 0xAAs before we get a valid message. */
@@ -68,13 +66,11 @@ static int acio_receive(uint8_t *buffer, int size)
         read = Serial1.readBytes(recv_buf, 1);
     } while (recv_buf[0] == AC_IO_SOF);
 
-    if (read > 0) {
-        size += 1;
+    if (read > 0) {//si j'ai lu un truc (reçu autre chose que AA)
 
         /* recv_buf[0] is already the first byte of the message.
            now read until nothing's left */
         recv_size++;
-        size--;
 
         /* important: we have to know how much data we expect
            and have to read until we reach the requested amount.
@@ -82,7 +78,17 @@ static int acio_receive(uint8_t *buffer, int size)
            need to handle escaping (which relies on an up to
            date recv_buf[recv_size]) we loop until we get a
            non-zero read. */
-        while (size > 0) {
+        while (size > 0) { //size c'est le param donc c le nombre de données lues requested
+            
+            /* we reached the NUMBYTE field, update size accordingly */
+            if (recv_size == 5) { 
+#ifdef ACIO_DEBUG
+   Serial.print(" remaining data size is "); 
+   Serial.println(recv_buf[recv_size-1]); 
+#endif
+              size = recv_buf[recv_size-1]+1; 
+            }
+            
             do {
                 read = Serial1.readBytes(recv_buf + recv_size, 1);
             } while (read == 0);
@@ -114,11 +120,19 @@ static int acio_receive(uint8_t *buffer, int size)
         /* recv_size - 1: omit checksum for checksum calc */
         for (int i = 0; i < recv_size - 1; i++) {
             checksum += recv_buf[i];
-            buffer[i] = recv_buf[i];
+            buffer[i] = recv_buf[i]; //copy to buffer
         }
 
         result_size = recv_size - 1;
-
+#ifdef ACIO_DEBUG
+    Serial.print("RECV : ");
+    for (int i=0; i<recv_size; i++){
+      if(recv_buf[i] < 0x10) Serial.print("0");
+      Serial.print(recv_buf[i], HEX);
+      Serial.print(" ");
+    }
+    Serial.println();
+#endif
         if (checksum != recv_buf[recv_size - 1]) {
             Serial.println("Invalid message checksum: ");
             Serial.print(checksum, HEX);
@@ -127,17 +141,16 @@ static int acio_receive(uint8_t *buffer, int size)
             Serial.println();
             return -1;
         }
-#ifdef ACIO_DEBUG
-    printf("RECV : ");
-    for (int i=0; i<recv_size; i++){
-      printf("%02X ", recv_buf[i]);
-    }
-    printf("\n");
-#endif
-        return result_size;
+
+        return result_size; //checksum doesn't count
     }
 
     return -1;
+}
+
+int acio_get_counter_and_increase()
+{
+  return acio_msg_counter++;
 }
 
 bool acio_send_and_recv(struct ac_io_message *msg, int resp_size)
@@ -151,14 +164,16 @@ bool acio_send_and_recv(struct ac_io_message *msg, int resp_size)
     if (acio_send((uint8_t *) msg, send_size) <= 0) {
         return false;
     }
-
+    
+    /* remember the sent cmd for sanity check */
     uint16_t req_code = msg->cmd.code;
 
     if (acio_receive((uint8_t *) msg, resp_size) <= 0) {
         return false;
     }
 
-    if (req_code != msg->cmd.code) {
+    /* sanity check */
+    if (msg->cmd.code != ac_io_u16(AC_IO_PANB_POLL_REPLY) && req_code != msg->cmd.code) {
         Serial.print("Received invalid response ");
         Serial.print(msg->cmd.code, HEX);
         Serial.print(" for request ");
@@ -200,13 +215,12 @@ static uint8_t acio_enum_nodes(void)
 {
     struct ac_io_message msg;
 
-    msg.addr = 0x00;
-    msg.cmd.code = ac_io_u16(AC_IO_CMD_ASSIGN_ADDRS);
+    msg.addr = 0x00; // not to a particular node
+    msg.cmd.code = ac_io_u16(AC_IO_CMD_ASSIGN_ADDRS); // enumerate command (00 01)
     msg.cmd.nbytes = 1;
-    msg.cmd.count = 0;
+    msg.cmd.count = 0; // 0 on request, will be set to nodecount on reply by acio_send_and_recv
 
-    if (!acio_send_and_recv(
-            &msg, offsetof(struct ac_io_message, cmd.raw) + 1)) {
+    if (!acio_send_and_recv(&msg, offsetof(struct ac_io_message, cmd.raw) + 1)) {
         printf("Enumerating nodes failed\n");
         return 0;
     }

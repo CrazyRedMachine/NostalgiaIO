@@ -1,5 +1,8 @@
 #include <Arduino.h>
 
+#define ac_io_u16(x) __builtin_bswap16(x)
+#define ac_io_u32(x) __builtin_bswap32(x)
+
 #define AC_IO_SOF 0xAA
 #define AC_IO_ESCAPE 0xFF
 enum ac_io_cmd {
@@ -10,6 +13,7 @@ enum ac_io_cmd {
     /* Yet unknown command encountered first on jubeat (1) */
     AC_IO_CMD_UNKN_00FF = 0x00FF,
     AC_IO_CMD_CLEAR = 0x0100,
+    AC_IO_PANB_POLL_REPLY = 0x0110,
 };
 
 struct ac_io_version {
@@ -48,5 +52,8 @@ struct ac_io_message {
     };
 };
 
+int acio_get_counter_and_increase();
+bool acio_send(const uint8_t *buffer, int length);
+int acio_receive(uint8_t *buffer, int size);
 bool acio_send_and_recv(struct ac_io_message *msg, int resp_size);
 bool acio_open();
