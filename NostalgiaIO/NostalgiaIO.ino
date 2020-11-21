@@ -81,7 +81,7 @@ void acio_loop(){
    send_lamp_cooldown--;
     if (send_lamp_cooldown == 0)
     {
-      NOSTHID.updateLeds();
+      NOSTHID.updateLeds(true,&NOSTHID_::color_reactive);
       send_lamp_cooldown = 4;
     }
   /* USB DATA */

@@ -29,7 +29,7 @@ class NOSTHID_ : public PluggableUSBModule {
      * param[in] knobs set to true to use knob activity for color shift
      * param[in] hid set to true to use hid led_data 
      */
-    void updateLeds();
+    void updateLeds(bool hid, color_t (*func)(uint8_t));
 
     /**
      * Sends the gamepad button states to the PC as an HID report
@@ -53,6 +53,9 @@ class NOSTHID_ : public PluggableUSBModule {
      * getter for lastHidUpdate protected field.
      */
     unsigned long getLastHidUpdate();
+
+
+    static color_t color_reactive(uint8_t button);
     
   protected:
     

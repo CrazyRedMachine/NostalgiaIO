@@ -21,20 +21,120 @@ static const byte PROGMEM _hidReportNOST[] = {
   0x75, 0x02,        //   Report Size (2)
   0x81, 0x03,        //   Input (Const,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
   
-  0x85, 0x02,        //   Report ID (2)
-      /* 14 RGB leds (42 leds) */
-    0x05, 0x09,        //     Usage Page (Buttons)
-    0x19, 0x01,        //     Usage Minimum (0x01)
-    0x29, 0x2A,        //     Usage Maximum (42)
-    0x15, 0x00,        //     Logical Minimum (0)
-    0x26, 0xFF, 0x00,        //     Logical Maximum (255)
-    0x95, 0x2A,        //     Report Count (84)
-    0x75, 0x08,        //     Report Size (8)
-    0x91, 0x02,        //     Output (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-  
+  0x85, 0x02,        //   Report ID (5)   
+      // 14 RGB leds (42 leds)
+    0x95, 0x2A,        //   REPORT_COUNT
+    0x75, 0x08,                    //   REPORT_SIZE (8)
+    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
+    0x26, 0xff, 0x00,              //   LOGICAL_MAXIMUM (255)
+    0x05, 0x0a,                    //   USAGE_PAGE (Ordinals)
+    // Locals
+    0x19, 0x01,                    //   USAGE_MINIMUM (Instance 1)
+    0x29, 0x2A,        //   USAGE_MAXIMUM (Instance n)
+    0xA1, 0x02,        //   Collection (Logical)
+      0x09, 0x01,        //       Usage (Indicator Red)
+      0x09, 0x02,        //       Usage (Indicator Red)
+      0x09, 0x03,        //       Usage (Indicator Red)
+      0x09, 0x04,        //       Usage (Indicator Red)
+      0x09, 0x05,        //       Usage (Indicator Red)
+      0x09, 0x06,        //       Usage (Indicator Red)
+      0x09, 0x07,        //       Usage (Indicator Red)
+      0x09, 0x08,        //       Usage (Indicator Red)
+      0x09, 0x09,        //       Usage (Indicator Red)
+      0x09, 0x0A,        //       Usage (Indicator Red)
+      0x09, 0x0B,        //       Usage (Indicator Red)
+      0x09, 0x0C,        //       Usage (Indicator Red)
+      0x09, 0x0D,        //       Usage (Indicator Red)
+      0x09, 0x0E,        //       Usage (Indicator Red)
+      0x09, 0x0F,        //       Usage (Indicator Red)
+      0x09, 0x10,        //       Usage (Indicator Red)
+      0x09, 0x11,        //       Usage (Indicator Red)
+      0x09, 0x12,        //       Usage (Indicator Red)
+      0x09, 0x13,        //       Usage (Indicator Red)
+      0x09, 0x14,        //       Usage (Indicator Red)
+      0x09, 0x15,        //       Usage (Indicator Red)
+      0x09, 0x16,        //       Usage (Indicator Red)
+      0x09, 0x17,        //       Usage (Indicator Red)
+      0x09, 0x18,        //       Usage (Indicator Red)
+      0x09, 0x19,        //       Usage (Indicator Red)
+      0x09, 0x1A,        //       Usage (Indicator Red)
+      0x09, 0x1B,        //       Usage (Indicator Red)
+      0x09, 0x1C,        //       Usage (Indicator Red)
+      0x09, 0x1D,        //       Usage (Indicator Red)
+      0x09, 0x1E,        //       Usage (Indicator Red)
+      0x09, 0x1F,        //       Usage (Indicator Red)
+      0x09, 0x20,        //       Usage (Indicator Red)
+      0x09, 0x21,        //       Usage (Indicator Red)
+      0x09, 0x22,        //       Usage (Indicator Red)
+      0x09, 0x23,        //       Usage (Indicator Red)
+      0x09, 0x24,        //       Usage (Indicator Red)
+      0x09, 0x25,        //       Usage (Indicator Red)
+      0x09, 0x26,        //       Usage (Indicator Red)
+      0x09, 0x27,        //       Usage (Indicator Red)
+      0x09, 0x28,        //       Usage (Indicator Red)
+      0x09, 0x29,        //       Usage (Indicator Red)
+      0x09, 0x2A,        //       Usage (Indicator Red)
+      0x91, 0x02,        //     Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
+    0xC0,              //   End Collection (RGB led)
+
+  0x85, 0x03,        //   Report ID (3)   
+      // 14 RGB leds (42 leds)
+    0x95, 0x2A,        //   REPORT_COUNT
+    0x75, 0x08,                    //   REPORT_SIZE (8)
+    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
+    0x26, 0xff, 0x00,              //   LOGICAL_MAXIMUM (255)
+    0x05, 0x0a,                    //   USAGE_PAGE (Ordinals)
+    0x19, 0x2B,                    //   USAGE_MINIMUM (Instance 1)
+    0x29, 0x54,        //   USAGE_MAXIMUM (Instance n)
+    0xA1, 0x02,        //   Collection (Logical)
+      0x09, 0x2B,        //       Usage (Indicator Red)
+      0x09, 0x2C,        //       Usage (Indicator Red)
+      0x09, 0x2D,        //       Usage (Indicator Red)
+      0x09, 0x2E,        //       Usage (Indicator Red)
+      0x09, 0x2F,        //       Usage (Indicator Red)
+      0x09, 0x30,        //       Usage (Indicator Red)
+      0x09, 0x31,        //       Usage (Indicator Red)
+      0x09, 0x32,        //       Usage (Indicator Red)
+      0x09, 0x33,        //       Usage (Indicator Red)
+      0x09, 0x34,        //       Usage (Indicator Red)
+      0x09, 0x35,        //       Usage (Indicator Red)
+      0x09, 0x36,        //       Usage (Indicator Red)
+      0x09, 0x37,        //       Usage (Indicator Red)
+      0x09, 0x38,        //       Usage (Indicator Red)
+      0x09, 0x39,        //       Usage (Indicator Red)
+      0x09, 0x3A,        //       Usage (Indicator Red)
+      0x09, 0x3B,        //       Usage (Indicator Red)
+      0x09, 0x3C,        //       Usage (Indicator Red)
+      0x09, 0x3D,        //       Usage (Indicator Red)
+      0x09, 0x3E,        //       Usage (Indicator Red)
+      0x09, 0x3F,        //       Usage (Indicator Red)
+      0x09, 0x40,        //       Usage (Indicator Red)
+      0x09, 0x41,        //       Usage (Indicator Red)
+      0x09, 0x42,        //       Usage (Indicator Red)
+      0x09, 0x43,        //       Usage (Indicator Red)
+      0x09, 0x44,        //       Usage (Indicator Red)
+      0x09, 0x45,        //       Usage (Indicator Red)
+      0x09, 0x46,        //       Usage (Indicator Red)
+      0x09, 0x47,        //       Usage (Indicator Red)
+      0x09, 0x48,        //       Usage (Indicator Red)
+      0x09, 0x49,        //       Usage (Indicator Red)
+      0x09, 0x4A,        //       Usage (Indicator Red)
+      0x09, 0x4B,        //       Usage (Indicator Red)
+      0x09, 0x4C,        //       Usage (Indicator Red)
+      0x09, 0x4D,        //       Usage (Indicator Red)
+      0x09, 0x4E,        //       Usage (Indicator Red)
+      0x09, 0x4F,        //       Usage (Indicator Red)
+      0x09, 0x50,        //       Usage (Indicator Red)
+      0x09, 0x51,        //       Usage (Indicator Red)
+      0x09, 0x52,        //       Usage (Indicator Red)
+      0x09, 0x53,        //       Usage (Indicator Red)
+      0x09, 0x54,        //       Usage (Indicator Red)
+      0x91, 0x02,        //     Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
+    0xC0,              //   End Collection (RGB led)
+  /*
   0x85, 0x03,        //   Report ID (3)
-      /* 14 RGB leds (42 leds) */
-    0x05, 0x09,        //     Usage Page (Buttons)
+      // 14 RGB leds (42 leds)
+    0x05, 0x0a,        //     Usage Page (Buttons)
     0x19, 0x2B,        //     Usage Minimum (0x01)
     0x29, 0x54,        //     Usage Maximum (0x54)
     0x15, 0x00,        //     Logical Minimum (0)
@@ -42,12 +142,12 @@ static const byte PROGMEM _hidReportNOST[] = {
     0x95, 0x2A,        //     Report Count (84)
     0x75, 0x08,        //     Report Size (8)
     0x91, 0x02,        //     Output (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-  
+  */
     /* HID modeswitch request (no usage page etc so it's not picked up by the tools) */
   0x85, 0x06,        //   Report ID (6)
     0x95, 0x01,        //     Report Count (1)
     0x75, 0x08,        //     Report Size (9)
-    0x91, 0x03,        //     Input (Const,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
+    0xb1, 0x03,        //     Input (Const,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
     
 0xC0  // End Collection (Gamepad)
 
@@ -187,8 +287,24 @@ static const byte PROGMEM _hidReportNOST[] = {
       }
      }
 
-    void NOSTHID_::updateLeds(){
-      panb_set_lamp_state_batch((uint8_t*)&(led_data[1]));
+    color_t NOSTHID_::color_reactive(uint8_t button)
+    {
+      if (buttonsState[button]) return {0,0x7F,0x23};
+
+      return {0,0,0};
+    }
+    void NOSTHID_::updateLeds(bool hid, color_t (*func)(uint8_t)){
+      if (hid)
+        panb_set_lamp_state_batch((uint8_t*)&(led_data[1]));
+
+      if (func != NULL)
+      {
+        for (int i=0; i<30; i++)
+        {
+          panb_set_lamp_state(i, func(i));
+        }
+      }
+      
       panb_send_lamp();
     }
     
