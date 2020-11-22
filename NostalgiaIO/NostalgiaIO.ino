@@ -1,4 +1,5 @@
 #include "NOSTHID.h"
+#include "Touch.h"
 
 #define REPORT_DELAY 1000
 NOSTHID_ NOSTHID;
@@ -47,11 +48,12 @@ void setup() {
     //Serial.begin(115200);
     fdev_setup_stream (&uartout, uart_putchar, NULL, _FDEV_SETUP_WRITE);
     stdout = &uartout ;
-    Serial.println("ACIO passthrough mode is off, init communication");
- /*   while (digitalRead(PIN_PASSTHROUGH) == HIGH){
+  /*  Serial.println("ACIO passthrough mode is off, init communication");
+    while (digitalRead(PIN_PASSTHROUGH) == HIGH){
       Serial.println("press the button to continue process");
       delay(1000);
     }*/
+    Touch.begin();
     NOSTHID.setLightMode(LIGHTMODE_COMBINED);
     NOSTHID.init_acio();
   }
@@ -88,10 +90,18 @@ void acio_loop(){
   /* USB DATA */
   if ( ( (micros() - lastReport) >= REPORT_DELAY) )
   {
-    NOSTHID.sendState();
+    if (digitalRead(PIN_PASSTHROUGH) == LOW) {
+      /* multitouch */
+      Touch.sendState(NOSTHID_::getButtonsState());
+    }
+    else 
+    {
+      /* gamepad */
+      NOSTHID.sendState();
+    }
+    
     lastReport = micros();
-  }  
-
+  }
 }
 
 void passthrough_loop() {

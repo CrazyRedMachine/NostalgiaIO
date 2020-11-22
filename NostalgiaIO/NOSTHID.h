@@ -64,7 +64,8 @@ class NOSTHID_ : public PluggableUSBModule {
      * getter for lastHidUpdate protected field.
      */
     unsigned long getLastHidUpdate();
-
+    
+    static uint8_t* getButtonsState();
     static color_t color_reactive(uint8_t button);
     static color_t color_interlace(uint8_t button);
     static color_t color_rainbow(uint8_t button);

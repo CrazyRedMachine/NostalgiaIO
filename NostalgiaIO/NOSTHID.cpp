@@ -418,7 +418,9 @@ const uint8_t HSVpower[121] =
           break;
       }
     }
-    
+    static uint8_t* NOSTHID_::getButtonsState(){
+      return buttonsState;
+    }
     int NOSTHID_::sendState(){
       uint32_t bitfield = 0;
       for(int i=0; i < 30; i++)
