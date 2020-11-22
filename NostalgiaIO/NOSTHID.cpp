@@ -408,7 +408,7 @@ const uint8_t HSVpower[121] =
           updateLeds(true, &color_interlace);
           break;
         case LIGHTMODE_RAINBOW:
-          updateLeds(true, &color_rainbow);
+          updateLeds(false, &color_rainbow);
           break;
         case LIGHTMODE_CHASE:
           updateLeds(true, &color_chase);
