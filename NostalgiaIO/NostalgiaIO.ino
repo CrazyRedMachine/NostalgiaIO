@@ -52,7 +52,7 @@ void setup() {
       Serial.println("press the button to continue process");
       delay(1000);
     }*/
-    NOSTHID.setLightMode(LIGHTMODE_BREATH);
+    NOSTHID.setLightMode(LIGHTMODE_COMBINED);
     NOSTHID.init_acio();
   }
   
