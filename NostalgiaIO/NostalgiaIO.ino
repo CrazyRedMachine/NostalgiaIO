@@ -52,6 +52,7 @@ void setup() {
       Serial.println("press the button to continue process");
       delay(1000);
     }
+    NOSTHID.setLightMode(LIGHTMODE_BREATH);
     NOSTHID.init_acio();
   }
   
@@ -81,7 +82,7 @@ void acio_loop(){
    send_lamp_cooldown--;
     if (send_lamp_cooldown == 0)
     {
-      NOSTHID.updateLeds(true,&NOSTHID_::color_reactive);
+      NOSTHID.updateLeds();
       send_lamp_cooldown = 4;
     }
   /* USB DATA */

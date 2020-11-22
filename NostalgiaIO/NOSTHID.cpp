@@ -147,7 +147,7 @@ static const byte PROGMEM _hidReportNOST[] = {
   0x85, 0x06,        //   Report ID (6)
     0x95, 0x01,        //     Report Count (1)
     0x75, 0x08,        //     Report Size (9)
-    0xb1, 0x03,        //     Input (Const,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
+    0x91, 0x03,        //     Input (Const,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
     
 0xC0  // End Collection (Gamepad)
 
@@ -230,7 +230,7 @@ static const byte PROGMEM _hidReportNOST[] = {
     void NOSTHID_::init_acio(void){
       acio_open();
       delay(500);
-      panb_set_auto_poll();
+      panb_set_auto_input();
     }
 
     void NOSTHID_::poll(){
@@ -293,6 +293,82 @@ static const byte PROGMEM _hidReportNOST[] = {
 
       return {0,0,0};
     }
+    
+    color_t NOSTHID_::color_interlace(uint8_t button)
+    {
+      
+      if (buttonsState[button]){
+        switch (button%3)
+        {
+          case 0:          
+            return {0,0x7F,0x23};
+          case 1:
+            return {0x23,0x00,0x7F};
+          case 2:
+            return {0x7F,0x23,0x00};
+        }
+      }
+
+      return {0,0,0};
+    }
+
+const uint8_t HSVpower[121] = 
+{0, 2, 4, 6, 8, 11, 13, 15, 17, 19, 21, 23, 25, 28, 30, 32, 34, 36, 38, 40,
+42, 45, 47, 49, 51, 53, 55, 57, 59, 62, 64, 66, 68, 70, 72, 74, 76, 79, 81, 
+83, 85, 87, 89, 91, 93, 96, 98, 100, 102, 104, 106, 108, 110, 113, 115, 117, 
+119, 121, 123, 125, 127, 130, 132, 134, 136, 138, 140, 142, 144, 147, 149, 
+151, 153, 155, 157, 159, 161, 164, 166, 168, 170, 172, 174, 176, 178, 181, 
+183, 185, 187, 189, 191, 193, 195, 198, 200, 202, 204, 206, 208, 210, 212, 
+215, 217, 219, 221, 223, 225, 227, 229, 232, 234, 236, 238, 240, 242, 244, 
+246, 249, 251, 253, 255};
+#define NBSHADES 28
+#define WAVESPEED 40
+    color_t NOSTHID_::color_rainbow(uint8_t button)
+    {
+      static unsigned long startTime = millis();
+      uint16_t angle;
+      if (!buttonsState[button]){
+        angle = ((button-((millis()-startTime)/(1000/WAVESPEED)))%NBSHADES)*360/NBSHADES;
+      } else angle = ((button+((millis()-startTime)/(1000/WAVESPEED)))%NBSHADES)*360/NBSHADES;
+      byte red, green, blue;
+      if (angle<120) {red = HSVpower[120-angle]; green = HSVpower[angle]; blue = 0;} 
+      else if (angle<240) {red = 0;  green = HSVpower[240-angle]; blue = HSVpower[angle-120];} 
+      else {red = HSVpower[angle-240]; green = 0; blue = HSVpower[360-angle];}
+                 
+      return {red, green, blue};
+    }
+#undef NBSHADES
+#undef WAVESPEED
+
+#define WAVESPEED 40
+    color_t NOSTHID_::color_chase(uint8_t button)
+    {
+      static unsigned long startTime = millis();
+      uint16_t angle;
+      bool pressed = !!buttonsState[button];
+      if (pressed){
+        angle = ((button-((millis()-startTime)/(1000/WAVESPEED)))%10)*360/10;
+      } else angle = ((button+((millis()-startTime)/(1000/WAVESPEED)))%10)*360/10;
+      byte red, green, blue;
+      if (angle<120) {red = HSVpower[120-angle]; green = HSVpower[angle]; blue = 0;} 
+      else if (angle<240) {red = 0;  green = HSVpower[240-angle]; blue = HSVpower[angle-120];} 
+      else {red = HSVpower[angle-240]; green = 0; blue = HSVpower[360-angle];}
+                 
+      return {red*pressed, 0, blue*!pressed};
+    }
+#undef WAVESPEED
+
+    
+#define WAVESPEED 130
+    color_t NOSTHID_::color_breath(uint8_t button)
+    {
+      static unsigned long startTime = millis();
+      uint16_t brightness = ((millis()-startTime)/(1000/WAVESPEED))%511;
+      if (brightness>255) brightness = 255-(brightness-255);
+      return {brightness, 0, (buttonsState[button])?0xFF:0};
+    }
+#undef WAVESPEED
+
     void NOSTHID_::updateLeds(bool hid, color_t (*func)(uint8_t)){
       if (hid)
         panb_set_lamp_state_batch((uint8_t*)&(led_data[1]));
@@ -301,11 +377,39 @@ static const byte PROGMEM _hidReportNOST[] = {
       {
         for (int i=0; i<30; i++)
         {
-          panb_set_lamp_state(i, func(i));
+          color_t color = func(i);
+          if (color.red|color.green|color.blue != 0) panb_set_lamp_state(i, func(i), true);
         }
       }
       
       panb_send_lamp();
+    }
+
+    void NOSTHID_::updateLeds(){
+      switch (lightMode)
+      {
+        case LIGHTMODE_REACTIVE:
+          updateLeds(false, &color_reactive);
+          break;
+        case LIGHTMODE_HID:
+          updateLeds(true, NULL);
+          break;       
+        case LIGHTMODE_COMBINED:
+          updateLeds(true, &color_reactive);
+          break;
+        case LIGHTMODE_INTERLACE:
+          updateLeds(true, &color_interlace);
+          break;
+        case LIGHTMODE_RAINBOW:
+          updateLeds(true, &color_rainbow);
+          break;
+        case LIGHTMODE_CHASE:
+          updateLeds(true, &color_chase);
+          break;
+        case LIGHTMODE_BREATH:
+          updateLeds(true, &color_breath);
+          break;
+      }
     }
     
     int NOSTHID_::sendState(){

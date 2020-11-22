@@ -2,8 +2,17 @@
 #include "PANB.h"
 
 #define EPTYPE_DESCRIPTOR_SIZE    uint8_t
-#define NUM_LIGHT_MODES 1
 
+enum lightmode_e {
+  LIGHTMODE_REACTIVE,
+  LIGHTMODE_HID,
+  LIGHTMODE_COMBINED,
+  LIGHTMODE_INTERLACE,
+  LIGHTMODE_RAINBOW,
+  LIGHTMODE_CHASE,  //TODO
+  LIGHTMODE_BREATH,
+  NUM_LIGHT_MODES,
+};
 //#define DEBUG
 
 #ifdef DEBUG
@@ -14,6 +23,8 @@
   #define DEBUG_VAR(x) 
 #endif
 
+
+static uint8_t buttonsState[30];
 class NOSTHID_ : public PluggableUSBModule {
 
   public:
@@ -30,7 +41,7 @@ class NOSTHID_ : public PluggableUSBModule {
      * param[in] hid set to true to use hid led_data 
      */
     void updateLeds(bool hid, color_t (*func)(uint8_t));
-
+    void updateLeds();
     /**
      * Sends the gamepad button states to the PC as an HID report
      * param[in] buttonsState bitfield with currently pressed buttons
@@ -54,8 +65,11 @@ class NOSTHID_ : public PluggableUSBModule {
      */
     unsigned long getLastHidUpdate();
 
-
     static color_t color_reactive(uint8_t button);
+    static color_t color_interlace(uint8_t button);
+    static color_t color_rainbow(uint8_t button);
+    static color_t color_chase(uint8_t button);
+    static color_t color_breath(uint8_t button);
     
   protected:
     
@@ -66,7 +80,6 @@ class NOSTHID_ : public PluggableUSBModule {
     /* byte array to receive HID reports from the PC */
     byte led_data[85];
     byte mode_data[2];
-    uint8_t buttonsState[30];
     
     /* Implementation of the PUSBListNode */
     EPTYPE_DESCRIPTOR_SIZE epType[1];

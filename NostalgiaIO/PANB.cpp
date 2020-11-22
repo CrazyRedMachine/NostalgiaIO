@@ -2,12 +2,18 @@
 
 static byte lamp_state[0x54];
 
-void panb_set_lamp_state(uint8_t key, color_t color)
+void panb_set_lamp_state(uint8_t key, color_t color, bool mix)
 {
   if (key < 29){
-    lamp_state[3*key] = color.red;
-    lamp_state[3*key+1] = color.green;
-    lamp_state[3*key+2] = color.blue;
+    if (!mix)
+    {
+      lamp_state[3*key] = 0;
+      lamp_state[3*key+1] = 0;
+      lamp_state[3*key+2] = 0;
+    }
+    lamp_state[3*key] |= color.red;
+    lamp_state[3*key+1] |= color.green;
+    lamp_state[3*key+2] |= color.blue;
   }
 }
 
@@ -36,13 +42,13 @@ bool panb_send_lamp()
     return true;
 }
 
-bool panb_set_auto_poll()
+bool panb_set_auto_input()
 {
 //AA 01 01 15 0B 01 04 27
     struct ac_io_message msg;
 
     msg.addr = 01;
-    msg.cmd.code = ac_io_u16(AC_IO_CMD_PANB_AUTOPOLL);
+    msg.cmd.code = ac_io_u16(AC_IO_CMD_PANB_AUTO_INPUT);
     msg.cmd.nbytes = 0x01;
     msg.cmd.count = 4;
 

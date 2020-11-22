@@ -8,7 +8,7 @@ typedef struct color_s {
 
 enum panb_cmd {
     AC_IO_CMD_PANB_LAMP = 0x0111,
-    AC_IO_CMD_PANB_AUTOPOLL = 0x0115,
+    AC_IO_CMD_PANB_AUTO_INPUT = 0x0115,
 };
 
 typedef struct panb_button_state_s {
@@ -23,6 +23,6 @@ typedef struct panb_button_state_s {
 } panb_button_state_t;
 
 void panb_set_lamp_state_batch(uint8_t source[]);
-void panb_set_lamp_state(uint8_t key, color_t color);
+void panb_set_lamp_state(uint8_t key, color_t color, bool mix);
 bool panb_send_lamp();
-bool panb_set_auto_poll();
+bool panb_set_auto_input();
