@@ -1,10 +1,22 @@
 # NostalgiaIO
 
-Arduino Leonardo firmware for arcade Nostalgia control panel, for official cabinets and home setups
+Arduino Leonardo firmware and tools for arcade Nostalgia control panel, for official cabinets and home setups
+
+This Readme covers the arduino firmware only. Find out more about tools in the tools folder readme.
+
+## Acknowledgments
+
+Multitouch support is based on Eric Troebs' [Touchy.ino](https://gist.github.com/erictroebs/3e6ca8aa2b9ed06e0b5527fd38dd2c2f) (https://github.com/NicoHood/HID/issues/123)
+
+## Demo
+
+https://www.instagram.com/p/CH4IKxJl1pu/
 
 ## Features
 
-### ACIO (native) mode
+It is recommended to use a latching switch for the MODE button.
+
+### ACIO (native) mode (plug the device while MODE is on)
 
 In this mode the arduino acts as a passthrough, so that the original data can interact with your device. It's useful if you modded your cab hardware and want to use the extended features for other games but still retain native compatibility with Nostalgia.
 
@@ -12,13 +24,31 @@ Note that you'll have to manually set the Arduino COM port to COM1 for it to wor
 
 You also need to have one KFCA and one ICCC node on a second acio device on COM2 (you can either use another RS232 to USB adapter for your original hardware, or you might use [ACreal_IO](https://github.com/Nadeflore/ACreal_IO/) to simulate them)
 
-### HID Gamepad mode
+### HID Gamepad mode (plug the device while MODE is off)
 
 In this mode the panel is a 31 button, 31 RGB HID light gamepad. It allows use with tools or other games.
 
-### Touchscreen mode
+### Multitouch mode (set MODE button to on after booting in HID mode)
 
-In this mode the panel acts like virtual touchpresses along the bottomedge of the screen, this was mainly developped for use with "Deemo", but might work for other android games too.
+In this mode the panel acts like virtual touchpresses along the bottomedge of the screen, this was mainly developped for use with "Deemo", but might work for other android games too (**note**: this is untested on IOS).
+
+### Light modes
+
+Once again there are a lot of lightmodes available. 
+
+#### Reactive
+
+#### HID only
+
+#### Combined
+
+#### Interlace
+
+#### Rainbow
+
+#### Chase
+
+#### Breath
 
 ## Pinout
 
@@ -49,7 +79,5 @@ Black | 7 | GND | - (GND) | - (GND) | GND
 TODO
 
 ## TODO
-
-- Write a leonardo firmware so one can modeswitch between midi keyboard, pc keyboard, hid multitouch (and with light effects) to play on PC version and android games as well.
 
 - Write a forwarder binary to keypresses so that real cab can play Op3 PC version as well.
