@@ -12,7 +12,9 @@ bool acio_send(const uint8_t *buffer, int length)
     uint8_t checksum = 0;
 
     if (length > sizeof(send_buf)) {
-        Serial.println("Send buffer overflow");
+#ifdef ACIO_DEBUG
+  Serial.println("Send buffer overflow");
+#endif
         return false;
     }
 
@@ -43,7 +45,9 @@ bool acio_send(const uint8_t *buffer, int length)
     printf("\n");
 #endif
     if (Serial1.write(send_buf, send_buf_pos) != send_buf_pos) {
+      #ifdef ACIO_DEBUG
         Serial.println("Sending data failed");
+      #endif
         return false;
     }
 
@@ -134,11 +138,13 @@ int acio_receive(uint8_t *buffer, int size)
     Serial.println();
 #endif
         if (checksum != recv_buf[recv_size - 1]) {
+#ifdef ACIO_DEBUG
             Serial.println("Invalid message checksum: ");
             Serial.print(checksum, HEX);
             Serial.print(" != ");
             Serial.print(recv_buf[recv_size - 1], HEX);
             Serial.println();
+#endif
             return -1;
         }
 
@@ -174,11 +180,13 @@ bool acio_send_and_recv(struct ac_io_message *msg, int resp_size)
 
     /* sanity check */
     if (msg->cmd.code != ac_io_u16(AC_IO_PANB_POLL_REPLY) && req_code != msg->cmd.code) {
+      #ifdef ACIO_DEBUG
         Serial.print("Received invalid response ");
         Serial.print(msg->cmd.code, HEX);
         Serial.print(" for request ");
         Serial.print(req_code, HEX);
         Serial.println();
+      #endif
         return false;
     }
 
@@ -187,7 +195,7 @@ bool acio_send_and_recv(struct ac_io_message *msg, int resp_size)
 
 static void acio_init(void)
 {
-    Serial.println("INIT DEVICE");
+//    Serial.println("INIT DEVICE");
     uint8_t read_buff = 0x00;
 
     /* init/reset the device by sending 0xAA until 0xAA is returned */
@@ -202,12 +210,12 @@ static void acio_init(void)
 //        Serial.println();
     } while ((read_buff != AC_IO_SOF));
     
-        Serial.println("Obtained SOF, clearing out buffer now");
+//        Serial.println("Obtained SOF, clearing out buffer now");
 
     while (Serial1.available()) {
         Serial1.read();
     }
-    Serial.println("Buffer cleared");
+//    Serial.println("Buffer cleared");
 }
 
 
@@ -221,7 +229,7 @@ static uint8_t acio_enum_nodes(void)
     msg.cmd.count = 0; // 0 on request, will be set to nodecount on reply by acio_send_and_recv
 
     if (!acio_send_and_recv(&msg, offsetof(struct ac_io_message, cmd.raw) + 1)) {
-        printf("Enumerating nodes failed\n");
+ //       printf("Enumerating nodes failed\n");
         return 0;
     }
     return msg.cmd.count;
@@ -240,10 +248,10 @@ static bool acio_get_version(uint8_t node_id, char product[4])
             offsetof(struct ac_io_message, cmd.raw) +
                 sizeof(struct ac_io_version)))
     {
-        printf("Get version of node %d failed\n", node_id);
+//        printf("Get version of node %d failed\n", node_id);
         return false;
     }
-
+#ifdef ACIO_DEBUG
     Serial.print("Node ");
     Serial.print(node_id,DEC);
     Serial.print(": type ");
@@ -265,7 +273,7 @@ static bool acio_get_version(uint8_t node_id, char product[4])
     Serial.print(msg.cmd.version.date);
     Serial.print(" ");
     Serial.println(msg.cmd.version.time);
-    
+#endif    
     memcpy(product, msg.cmd.version.product_code, 4);    
 
     return true;
@@ -282,11 +290,11 @@ static bool acio_start_node(uint8_t node_id)
     if (!acio_send_and_recv(
             &msg, offsetof(struct ac_io_message, cmd.raw) + 1))
     {
-        printf("Starting node %d failed\n", node_id);
+//        printf("Starting node %d failed\n", node_id);
         return false;
     }
 
-    printf("Started node %d, status: %d\n", node_id, msg.cmd.status);
+//    printf("Started node %d, status: %d\n", node_id, msg.cmd.status);
     return true;
 }
 

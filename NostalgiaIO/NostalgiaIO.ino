@@ -48,10 +48,10 @@ void setup() {
     fdev_setup_stream (&uartout, uart_putchar, NULL, _FDEV_SETUP_WRITE);
     stdout = &uartout ;
     Serial.println("ACIO passthrough mode is off, init communication");
-    while (digitalRead(PIN_PASSTHROUGH) == HIGH){
+ /*   while (digitalRead(PIN_PASSTHROUGH) == HIGH){
       Serial.println("press the button to continue process");
       delay(1000);
-    }
+    }*/
     NOSTHID.setLightMode(LIGHTMODE_BREATH);
     NOSTHID.init_acio();
   }
@@ -77,13 +77,13 @@ color_t colors[6] = {{0x7F,0x23,0x00},{0x00,0x7F,0x23},{0x23,0x00,0x7F},{0xFF,0x
 
 unsigned long lastReport = 0;
 void acio_loop(){
-   static uint8_t send_lamp_cooldown = 2;
+   static uint8_t send_lamp_cooldown = 5;
    NOSTHID.poll();
    send_lamp_cooldown--;
     if (send_lamp_cooldown == 0)
     {
       NOSTHID.updateLeds();
-      send_lamp_cooldown = 4;
+      send_lamp_cooldown = 5;
     }
   /* USB DATA */
   if ( ( (micros() - lastReport) >= REPORT_DELAY) )

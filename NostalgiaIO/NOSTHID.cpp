@@ -21,7 +21,7 @@ static const byte PROGMEM _hidReportNOST[] = {
   0x75, 0x02,        //   Report Size (2)
   0x81, 0x03,        //   Input (Const,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
   
-  0x85, 0x02,        //   Report ID (5)   
+  0x85, 0x02,        //   Report ID (2)   
       // 14 RGB leds (42 leds)
     0x95, 0x2A,        //   REPORT_COUNT
     0x75, 0x08,                    //   REPORT_SIZE (8)
@@ -353,19 +353,23 @@ const uint8_t HSVpower[121] =
       if (angle<120) {red = HSVpower[120-angle]; green = HSVpower[angle]; blue = 0;} 
       else if (angle<240) {red = 0;  green = HSVpower[240-angle]; blue = HSVpower[angle-120];} 
       else {red = HSVpower[angle-240]; green = 0; blue = HSVpower[360-angle];}
-                 
-      return {red*pressed, 0, blue*!pressed};
+
+      if (pressed) return {red,0,0};
+      return {0,0,blue};
     }
 #undef WAVESPEED
 
     
-#define WAVESPEED 130
+#define WAVESPEED 100
     color_t NOSTHID_::color_breath(uint8_t button)
     {
-      static unsigned long startTime = millis();
-      uint16_t brightness = ((millis()-startTime)/(1000/WAVESPEED))%511;
+      static unsigned long startTime = 0;
+      static unsigned long currTime = 0;
+      currTime++;
+      uint16_t brightness = ((currTime-startTime)/(1000/WAVESPEED))%511;
       if (brightness>255) brightness = 255-(brightness-255);
-      return {brightness, 0, (buttonsState[button])?0xFF:0};
+      byte brit = (byte) (brightness & 0xFF);
+      return {0, 0, brit};//(buttonsState[button])?0xFF:0};
     }
 #undef WAVESPEED
 
@@ -375,14 +379,17 @@ const uint8_t HSVpower[121] =
 
       if (func != NULL)
       {
-        for (int i=0; i<30; i++)
+        for (int i=0; i<28; i++)
         {
           color_t color = func(i);
-          if (color.red|color.green|color.blue != 0) panb_set_lamp_state(i, func(i), true);
+          if (color.red|color.green|color.blue != 0) {
+            panb_set_lamp_state(i, func(i), true);
+          }
         }
       }
       
       panb_send_lamp();
+      panb_set_lamp_state_batch(NULL);
     }
 
     void NOSTHID_::updateLeds(){
@@ -416,14 +423,14 @@ const uint8_t HSVpower[121] =
       uint32_t bitfield = 0;
       for(int i=0; i < 30; i++)
       {
-        if (buttonsState[i]) bitfield |= (uint32_t)((uint32_t)1<<i);
+        if (buttonsState[i]){
+          bitfield |= (uint32_t)((uint32_t)1<<i);
+        }
       }
       /* finally, send HID report */
       uint8_t data[5];
       data[0] = (uint8_t) 4; //report id
-      data[1] = (uint8_t) (bitfield & 0xFF);
-      data[2] = (uint8_t) (bitfield >> 8) & 0xFF;
-      data[3] = (uint8_t) (bitfield >> 16) & 0xFF;
-      data[4] = (uint8_t) (bitfield >> 24) & 0xFF;
+      uint32_t* data32 = (uint32_t *) &(data[1]);
+      *data32 = bitfield;
       return USB_Send(pluggedEndpoint | TRANSFER_RELEASE, data, 5);
     }
