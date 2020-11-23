@@ -24,7 +24,7 @@ enum lightmode_e {
 #endif
 
 
-static uint8_t buttonsState[30];
+static uint8_t buttonsState[30] = {0};
 class NOSTHID_ : public PluggableUSBModule {
 
   public:

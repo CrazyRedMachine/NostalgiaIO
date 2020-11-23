@@ -418,7 +418,7 @@ const uint8_t HSVpower[121] =
           break;
       }
     }
-    static uint8_t* NOSTHID_::getButtonsState(){
+    uint8_t* NOSTHID_::getButtonsState(){
       return buttonsState;
     }
     int NOSTHID_::sendState(){

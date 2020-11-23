@@ -2,8 +2,8 @@
 
 #if defined(_USING_HID)
 
-#define CONTACT_COUNT_MAXIMUM 8
-#define REPORTID_TOUCH        0x08
+#define CONTACT_COUNT_MAXIMUM 10
+#define REPORTID_TOUCH        0x01
 
 static const uint8_t _hidReportDescriptor[] PROGMEM = {
   0x05, 0x0D,                    // USAGE_PAGE(Digitizers)
@@ -73,9 +73,10 @@ typedef struct Finger {
   int contact;
   uint16_t x;
   uint16_t y;
+  bool already_off; //send release report only once
 } Finger;
 
-Finger fingers[CONTACT_COUNT_MAXIMUM];
+static Finger fingers[CONTACT_COUNT_MAXIMUM];
 
 typedef struct stack {
   int size;
@@ -84,47 +85,21 @@ typedef struct stack {
 
 stack_t contact_stack;
 
-static void stack_print(stack_t *st)
-{
-  Serial.println("stack state :");
-  Serial.print("size ");
-  Serial.println(st->size);
-  for (int i=0; i< st->size; i++)
-  {
-    Serial.print(st->data[i]);
-    Serial.print(" ");
-  }
-  Serial.println();
-}
 static bool stack_push(stack_t *st, int val)
 {
-  Serial.print("stack push ");
-  Serial.print(val);
-  Serial.print(" (current size will grow to ");
-  Serial.println(st->size+1);
   if (st->size < CONTACT_COUNT_MAXIMUM)
   {
     st->data[st->size++] = val;
-
-    stack_print(st);
-    
     return true;
   }
   return false;
 }
 static int stack_pop(stack_t *st)
 {
-  Serial.print("stack_pop (with size = ");
-  Serial.println(st->size);
   if (st->size > 0)
   {
     st->size--;
-    Serial.print("return ");
-    Serial.println(st->data[st->size]);
-
-    stack_print(st);
-    
-      return st->data[st->size];
+    return st->data[st->size];
   }
   Serial.println("ABORT OPERATION, ILLEGAL POP"); 
   return -1;
@@ -142,6 +117,7 @@ Touch_::Touch_() {
     fingers[i].contact = 0;
     fingers[i].x = 0;
     fingers[i].y = 0;
+    fingers[i].already_off = true;
   }
 }
 
@@ -158,7 +134,7 @@ void Touch_::end(void) {
 }
 
 
-void Touch_::send(uint8_t identifier, uint8_t touch, int16_t x, int16_t y) {
+void Touch_::send(uint8_t identifier) {
   // calculate current contact count
   uint8_t contact = 0;
   
@@ -172,14 +148,24 @@ void Touch_::send(uint8_t identifier, uint8_t touch, int16_t x, int16_t y) {
   uint8_t usbdata[7];
   usbdata[0] = contact;
   usbdata[1] = identifier;
-  usbdata[2] = touch;
+  usbdata[2] = fingers[identifier].contact;
   int16_t * datax = (int16_t *) &(usbdata[3]);
-  *datax = x;
+  *datax = fingers[identifier].x;
   int16_t * datay = (int16_t *) &(usbdata[5]);
-  *datay = y;
+  *datay = fingers[identifier].y;
   
   // send packet
-  HID().SendReport(REPORTID_TOUCH, usbdata, 7);
+  if (fingers[identifier].contact){
+    fingers[identifier].already_off = false;
+    HID().SendReport(REPORTID_TOUCH, usbdata, 7);
+  } else if (fingers[identifier].already_off == false)
+  {
+    fingers[identifier].already_off = true;
+    //usbdata[0]++; //has to take into account the one we're about to remove
+    HID().SendReport(REPORTID_TOUCH, usbdata, 7);
+  }
+  
+  //
 
 }
 
@@ -191,7 +177,7 @@ void Touch_::moveFingerTo(uint8_t identifier, int16_t x, int16_t y) {
   fingers[identifier].y = y;
 
   // send update
-  send(identifier, 1, x, y);
+  //send(identifier);
 }
 
 void Touch_::releaseFinger(uint8_t identifier) {
@@ -201,12 +187,15 @@ void Touch_::releaseFinger(uint8_t identifier) {
   fingers[identifier].y = 0;
 
   // send update
-  send(identifier, 0, 0, 0);
+  //send(identifier);
 }
 
+void Touch_::sendState(){
+  for (int i=0; i<CONTACT_COUNT_MAXIMUM; i++)
+    send(i);
+}
 
-
-void Touch_::sendState(uint8_t *buttonsState){
+void Touch_::updateState(uint8_t *buttonsState){
   bool change = false;
   /* current[28] stores the currently used "contact_id" for the corresponding button */
   static int8_t current[28] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};

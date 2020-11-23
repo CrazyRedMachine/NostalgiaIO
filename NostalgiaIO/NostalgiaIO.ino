@@ -73,12 +73,9 @@ void loop() {
   }
 }
 
-
-color_t color = {0x23,0x00,0x7F};
-color_t colors[6] = {{0x7F,0x23,0x00},{0x00,0x7F,0x23},{0x23,0x00,0x7F},{0xFF,0x00,0x00},{0x00,0xFF,0x00},{0x00,0x00,0xFF}};
-
-unsigned long lastReport = 0;
 void acio_loop(){
+   static unsigned long lastReport = 0;
+   static uint8_t send_multitouch_cooldown = 2;
    static uint8_t send_lamp_cooldown = 5;
    NOSTHID.poll();
    send_lamp_cooldown--;
@@ -92,7 +89,14 @@ void acio_loop(){
   {
     if (digitalRead(PIN_PASSTHROUGH) == LOW) {
       /* multitouch */
-      Touch.sendState(NOSTHID_::getButtonsState());
+      
+      send_multitouch_cooldown--;
+      if (send_multitouch_cooldown == 0)
+      {
+        Touch.updateState(NOSTHID.getButtonsState());
+        Touch.sendState();
+        send_multitouch_cooldown = 2;
+      }
     }
     else 
     {
