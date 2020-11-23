@@ -5,7 +5,7 @@
 NOSTHID_ NOSTHID;
   
 bool passthrough = false;
-#define PIN_PASSTHROUGH 7
+#define PIN_PASSTHROUGH A3
 #define PIN_LED 13
 
 static FILE uartout = {0} ;

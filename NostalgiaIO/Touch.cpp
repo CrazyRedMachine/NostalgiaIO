@@ -5,6 +5,13 @@
 #define CONTACT_COUNT_MAXIMUM 10
 #define REPORTID_TOUCH        0x01
 
+#define LOWER_PART 9000
+#define CENTER_PART 5000
+#define UPPER_PART 1000
+#define UPPER_PIN 7
+#define CENTER_PIN 6
+#define TOUCH_HEIGHT (digitalRead(CENTER_PIN) == LOW) ? CENTER_PART : ( (digitalRead(UPPER_PIN) == LOW) ? UPPER_PART : LOWER_PART )
+
 static const uint8_t _hidReportDescriptor[] PROGMEM = {
   0x05, 0x0D,                    // USAGE_PAGE(Digitizers)
   0x09, 0x04,                    // USAGE     (Touch Screen)
@@ -73,7 +80,8 @@ typedef struct Finger {
   int contact;
   uint16_t x;
   uint16_t y;
-  bool already_off; //send release report only once
+  bool already_off; 
+  bool already_on; //send reports only on state change
 } Finger;
 
 static Finger fingers[CONTACT_COUNT_MAXIMUM];
@@ -110,6 +118,8 @@ static bool stack_isempty(stack *st)
 }
 
 Touch_::Touch_() {
+  pinMode(CENTER_PIN, INPUT_PULLUP);
+  pinMode(UPPER_PIN, INPUT_PULLUP);
   static HIDSubDescriptor node(_hidReportDescriptor, sizeof(_hidReportDescriptor));
   HID().AppendDescriptor(&node);
 
@@ -157,11 +167,11 @@ void Touch_::send(uint8_t identifier) {
   // send packet
   if (fingers[identifier].contact){
     fingers[identifier].already_off = false;
-    HID().SendReport(REPORTID_TOUCH, usbdata, 7);
-  } else if (fingers[identifier].already_off == false)
+      HID().SendReport(REPORTID_TOUCH, usbdata, 7);
+    
+  } else if (!fingers[identifier].already_off)
   {
     fingers[identifier].already_off = true;
-    //usbdata[0]++; //has to take into account the one we're about to remove
     HID().SendReport(REPORTID_TOUCH, usbdata, 7);
   }
   
@@ -175,9 +185,6 @@ void Touch_::moveFingerTo(uint8_t identifier, int16_t x, int16_t y) {
   fingers[identifier].contact = 1;
   fingers[identifier].x = x;
   fingers[identifier].y = y;
-
-  // send update
-  //send(identifier);
 }
 
 void Touch_::releaseFinger(uint8_t identifier) {
@@ -185,9 +192,6 @@ void Touch_::releaseFinger(uint8_t identifier) {
   fingers[identifier].contact = 0;
   fingers[identifier].x = 0;
   fingers[identifier].y = 0;
-
-  // send update
-  //send(identifier);
 }
 
 void Touch_::sendState(){
@@ -196,30 +200,24 @@ void Touch_::sendState(){
 }
 
 void Touch_::updateState(uint8_t *buttonsState){
-  bool change = false;
   /* current[28] stores the currently used "contact_id" for the corresponding button */
-  static int8_t current[28] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+  static int8_t current[28] = {-1};
   uint8_t butStat[28];
   memcpy(butStat,buttonsState,28);
 
-//Serial.println("check panel phase 1: old presses update");
+/* pass 1: old presses */
 for (int i=0; i<28; i++)
 {
   if (current[i]!=-1)
   {
-//      Serial.print(i);
-//      Serial.print(": ");
     if (butStat[i] > 0)
     {
-//      Serial.println("keep");
        //still pressed, but must resend report
-     moveFingerTo(current[i], i*(10000/28), 9000); 
+     moveFingerTo(current[i], (i+1)*(10000/29), TOUCH_HEIGHT); 
     }
     else
     {
-//      Serial.println("release");
       //must release
-  //    change = true;
       stack_push(&contact_stack, current[i]);
       releaseFinger(current[i]);
       current[i] = -1;
@@ -233,18 +231,17 @@ for (int i=0; i<28; i++)
       return;
     }
     
-//Serial.println("check panel phase 2: new presses");
+/* phase 2: new presses */    
   for(int i=0; i < 28; i++)
   {
-    //int idx = (3*i)%28;
-    int idx = i;
+    int idx = (3*i)%28;
+    //int idx = i;
     if (butStat[idx]){
       if (current[idx] == -1)
       { // new touchpoint
-        change = true;
         int contact_id = stack_pop(&contact_stack);
         current[idx] = contact_id;
-        moveFingerTo(contact_id, idx*(10000/28), 9000);
+        moveFingerTo(contact_id, (idx+1)*(10000/29), TOUCH_HEIGHT);
         if (stack_isempty(&contact_stack)) return;
       }      
     } 
