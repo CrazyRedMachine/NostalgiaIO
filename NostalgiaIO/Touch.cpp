@@ -201,7 +201,7 @@ void Touch_::sendState(){
 
 void Touch_::updateState(uint8_t *buttonsState){
   /* current[28] stores the currently used "contact_id" for the corresponding button */
-  static int8_t current[28] = {-1};
+  static int8_t current[28] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
   uint8_t butStat[28];
   memcpy(butStat,buttonsState,28);
 
@@ -234,8 +234,7 @@ for (int i=0; i<28; i++)
 /* phase 2: new presses */    
   for(int i=0; i < 28; i++)
   {
-    int idx = (3*i)%28;
-    //int idx = i;
+    int idx = (3*i)%28; //avoid bias towards the left side of panel
     if (butStat[idx]){
       if (current[idx] == -1)
       { // new touchpoint

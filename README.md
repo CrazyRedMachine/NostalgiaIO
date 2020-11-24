@@ -22,7 +22,7 @@ In this mode the arduino acts as a passthrough, so that the original data can in
 
 Note that you'll have to manually set the Arduino COM port to COM1 for it to work as the game will only look for the device there.
 
-You also need to have one KFCA and one ICCC node on a second acio device on COM2 (you can either use another RS232 to USB adapter for your original hardware, or you might use [ACreal_IO](https://github.com/Nadeflore/ACreal_IO/) to simulate them)
+You also need to have one KFCA and one ICCC node on a second acio device on COM2 (you can either use another RS232 to USB adapter for your original hardware, or you might use [ACreal_IO](https://github.com/CrazyRedMachine/ACreal_IO) to simulate them)
 
 ### HID Gamepad mode (plug the device while MODE is off)
 
@@ -74,10 +74,8 @@ Black | 7 | GND | - (GND) | - (GND) | GND
 
 **Note:** Make sure to wire the keyboard to the RS232 side of the adapter, and the arduino to the TTL side. Use the 3.3v pin to power the MAX3232 chip **from the TTL side**.
 
-## Usage
+## WIP Features
 
-TODO
-
-## TODO
-
-- Write a forwarder binary to keypresses so that real cab can play Op3 PC version as well.
+- [MIDI] MIDI mode
+- [Multitouch] Increase key width virtually
+- [Misc.] Write a forwarder binary to keypresses so that real cab can play Op3 PC version as well.
