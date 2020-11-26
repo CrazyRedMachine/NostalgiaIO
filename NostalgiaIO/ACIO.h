@@ -1,3 +1,6 @@
+#ifndef acio_h
+#define acio_h
+
 #include <Arduino.h>
 
 #define ac_io_u16(x) __builtin_bswap16(x)
@@ -57,3 +60,5 @@ bool acio_send(const uint8_t *buffer, int length);
 int acio_receive(uint8_t *buffer, int size);
 bool acio_send_and_recv(struct ac_io_message *msg, int resp_size);
 bool acio_open();
+
+#endif

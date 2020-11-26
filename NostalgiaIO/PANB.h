@@ -1,3 +1,5 @@
+#ifndef panb_h
+#define panb_h
 #include "ACIO.h"
 
 typedef struct color_s {
@@ -26,3 +28,5 @@ void panb_set_lamp_state_batch(uint8_t source[]);
 void panb_set_lamp_state(uint8_t key, color_t color, bool mix);
 bool panb_send_lamp();
 bool panb_set_auto_input();
+
+#endif

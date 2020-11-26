@@ -51,7 +51,6 @@ bool panb_send_lamp()
 
 bool panb_set_auto_input()
 {
-//AA 01 01 15 0B 01 04 27
     struct ac_io_message msg;
 
     msg.addr = 01;
