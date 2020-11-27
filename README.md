@@ -28,9 +28,14 @@ Note that you'll have to manually set the Arduino COM port to COM1 for it to wor
 
 You also need to have one KFCA and one ICCC node on a second acio device on COM2 (you can either use another RS232 to USB adapter for your original hardware, or you might use [ACreal_IO](https://github.com/CrazyRedMachine/ACreal_IO) to simulate them with an arduino MEGA)
 
+### HID Lights
+
+All panel lights can be controlled with HID messages. Lightmodes and palette can be setup with HID messages as well.
+The HID lights are accessible in MIDI and Multitouch mode but cannot be accessed while in native mode.
+
 ### MIDI mode (plug the device while MODE is off)
 
-In this mode the panel is a 31 button, 31 RGB HID light gamepad. It allows use with tools or other games.
+In this mode the panel is a MIDI keyboard (with only white keys).
 
 ### Multitouch mode (set MODE button to on after booting in MIDI mode)
 
