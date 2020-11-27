@@ -2,11 +2,15 @@
 
 Arduino Leonardo firmware and tools for arcade Nostalgia control panel, for official cabinets and home setups
 
-This Readme covers the arduino firmware only. Find out more about tools in the tools folder readme.
+This Readme covers the Arduino firmware only. Find out more about tools in the tools folder readme.
 
 ## Acknowledgments
 
+ACIO layer code heavily based on Bemanitools 5.
+
 Multitouch support is based on Eric Troebs' [Touchy.ino](https://gist.github.com/erictroebs/3e6ca8aa2b9ed06e0b5527fd38dd2c2f) (https://github.com/NicoHood/HID/issues/123)
+
+MIDI support is based on Gary Grewal's [MIDIUSB Library](https://github.com/arduino-libraries/MIDIUSB)
 
 ## Demo
 
@@ -20,27 +24,37 @@ It is recommended to use a latching switch for the MODE button.
 
 In this mode the arduino acts as a passthrough, so that the original data can interact with your device. It's useful if you modded your cab hardware and want to use the extended features for other games but still retain native compatibility with Nostalgia.
 
-Note that you'll have to manually set the Arduino COM port to COM1 for it to work as the game will only look for the device there.
+Note that you'll have to manually set the Arduino COM port to COM1 for it to work as the game will only look for the device there and will spawn a KEYBOARD ERROR if not found.
 
-You also need to have one KFCA and one ICCC node on a second acio device on COM2 (you can either use another RS232 to USB adapter for your original hardware, or you might use [ACreal_IO](https://github.com/CrazyRedMachine/ACreal_IO) to simulate them)
+You also need to have one KFCA and one ICCC node on a second acio device on COM2 (you can either use another RS232 to USB adapter for your original hardware, or you might use [ACreal_IO](https://github.com/CrazyRedMachine/ACreal_IO) to simulate them with an arduino MEGA)
 
-### HID Gamepad mode (plug the device while MODE is off)
+### MIDI mode (plug the device while MODE is off)
 
 In this mode the panel is a 31 button, 31 RGB HID light gamepad. It allows use with tools or other games.
 
-### Multitouch mode (set MODE button to on after booting in HID mode)
+### Multitouch mode (set MODE button to on after booting in MIDI mode)
 
-In this mode the panel acts like virtual touchpresses along the bottomedge of the screen, this was mainly developped for use with "Deemo", but might work for other android games too (**note**: this is untested on IOS).
+In this mode the panel acts like virtual touchpresses along the bottom edge of the screen, this was mainly developped for use with "Pianista", but might work for other android games too (**note**: this is untested on IOS).
+
+- Presses go along the bottom edge of the screen (10% from bottom edge).
+
+And to facilitate menu navigation in some games :
+
+- While holding TEST button, presses go along the center line (50%)
+- While holding COIN button, presses go along the top edge (10% from top edge)
 
 ### Light modes
 
-Once again there are a lot of lightmodes available. 
+There are a lot of cool lightmodes available. 
+You can set the mode either by sending a value byte to report id 6, or by holding service and pressing the leftmost piano key.
 
-#### Reactive
+All modes (except rainbow modes) also have several color palettes available which can be switched either by sending a value byte to report id 6 or by holding service and pressing the 2nd leftmost piano key.
 
-#### HID only
+#### HID (with reactive fallback)
 
 #### Combined
+
+#### Invert
 
 #### Interlace
 
@@ -49,6 +63,10 @@ Once again there are a lot of lightmodes available.
 #### Chase
 
 #### Breath
+
+#### Fade out
+
+#### Rainbow fade out
 
 ## Pinout
 
@@ -74,8 +92,10 @@ Black | 7 | GND | - (GND) | - (GND) | GND
 
 **Note:** Make sure to wire the keyboard to the RS232 side of the adapter, and the arduino to the TTL side. Use the 3.3v pin to power the MAX3232 chip **from the TTL side**.
 
+### Additional buttons
+
+Unlike the other pins, SERVICE/TEST/COIN/MODE buttons can be freely moved to other GPIO by editing the `#define PIN_*` at the beginning of `NostalgiaIO.ino`
+
 ## WIP Features
 
-- [MIDI] MIDI mode
-- [Multitouch] Increase key width virtually
-- [Misc.] Write a forwarder binary to keypresses so that real cab can play Op3 PC version as well.
+- [Misc.] Write a forwarder binary to keypresses so that real cab can play Op3 PC version as well without having to use an arduino.

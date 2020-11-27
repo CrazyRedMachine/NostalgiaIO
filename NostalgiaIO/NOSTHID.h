@@ -1,16 +1,25 @@
+#ifndef NOSTHID_h
+#define NOSTHID_h
+#define EPTYPE_DESCRIPTOR_SIZE    uint8_t
 #include "HID.h"
 #include "PANB.h"
 
-#define EPTYPE_DESCRIPTOR_SIZE    uint8_t
+#if !defined(_USING_HID)
+
+#warning "Using legacy HID core (non pluggable)"
+
+#else
 
 enum lightmode_e {
-  LIGHTMODE_REACTIVE,
   LIGHTMODE_HID,
   LIGHTMODE_COMBINED,
+  LIGHTMODE_INVERT,
   LIGHTMODE_INTERLACE,
   LIGHTMODE_RAINBOW,
-  LIGHTMODE_CHASE,  //TODO
+  LIGHTMODE_CHASE,
   LIGHTMODE_BREATH,
+  LIGHTMODE_FADE,
+  LIGHTMODE_RAINBOW_FADE,
   NUM_LIGHT_MODES,
 };
 //#define DEBUG
@@ -23,13 +32,33 @@ enum lightmode_e {
   #define DEBUG_VAR(x) 
 #endif
 
+extern uint8_t buttonsState[30];
 
-static uint8_t buttonsState[30] = {0};
+static color_t palette_color[3][3] = {
+  {{0x7F,0x23,0},{0,0x7F,0x23},{0x23,0,0x7F}},
+  {{0x7F,0xFF,0},{0,0x7F,0xFF},{0xFF,0,0x7F}},
+  {{0xFF,0,0},{0,0xFF,0},{0,0,0xFF}},
+};
+static uint8_t palette = 2;
+
+#define COLOR_OFF {0,0,0}
+#define PALETTE_COLOR_1 palette_color[palette][0]
+#define PALETTE_COLOR_2 palette_color[palette][1]
+#define PALETTE_COLOR_3 palette_color[palette][2]
+#define NUM_PALETTE 3
+
 class NOSTHID_ : public PluggableUSBModule {
-
-  public:
-    NOSTHID_(void);
-    
+private:
+  int send(uint8_t identifier);
+public:
+  NOSTHID_(void);
+  void begin(void);
+  void end(void);
+  void moveFingerTo(uint8_t finger, int16_t x, int16_t y);
+  void releaseFinger(uint8_t finger);
+  void updateState();
+  //void sendState();
+  
     void init_acio(void);
 
     void poll();
@@ -59,6 +88,8 @@ class NOSTHID_ : public PluggableUSBModule {
      */
     uint8_t getLightMode();
     void setLightMode(uint8_t mode);
+    uint8_t getPalette();
+    void setPalette(uint8_t pal);
     
     /**
      * getter for lastHidUpdate protected field.
@@ -66,21 +97,16 @@ class NOSTHID_ : public PluggableUSBModule {
     unsigned long getLastHidUpdate();
     
     static uint8_t* getButtonsState();
-    static color_t color_reactive(uint8_t button);
-    static color_t color_interlace(uint8_t button);
-    static color_t color_rainbow(uint8_t button);
-    static color_t color_chase(uint8_t button);
-    static color_t color_breath(uint8_t button);
     
-  protected:
-    
+protected:
     /* current lightMode (0 = reactive, 1 = HID only, 2 = mixed (HID+reactive auto-switch), 3 = combined (HID+button presses), 4 = combined invert) */
     uint8_t lightMode = 2;
+    
     /* timestamp of last received HID report for lightMode 3 */
     unsigned long lastHidUpdate = 0;
     /* byte array to receive HID reports from the PC */
     byte led_data[85];
-    byte mode_data[2];
+    byte mode_data[3];
     
     /* Implementation of the PUSBListNode */
     EPTYPE_DESCRIPTOR_SIZE epType[1];
@@ -91,5 +117,7 @@ class NOSTHID_ : public PluggableUSBModule {
     bool setup(USBSetup& setup);
     uint8_t getShortName(char *name);
 };
-
 extern NOSTHID_ NOSTHID;
+
+#endif
+#endif

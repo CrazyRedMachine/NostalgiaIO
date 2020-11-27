@@ -70,7 +70,7 @@ int acio_receive(uint8_t *buffer, int size)
         read = Serial1.readBytes(recv_buf, 1);
     } while (recv_buf[0] == AC_IO_SOF);
 
-    if (read > 0) {//si j'ai lu un truc (reçu autre chose que AA)
+    if (read > 0) {
 
         /* recv_buf[0] is already the first byte of the message.
            now read until nothing's left */
@@ -82,7 +82,7 @@ int acio_receive(uint8_t *buffer, int size)
            need to handle escaping (which relies on an up to
            date recv_buf[recv_size]) we loop until we get a
            non-zero read. */
-        while (size > 0) { //size c'est le param donc c le nombre de données lues requested
+        while (size > 0) { 
             
             /* we reached the NUMBYTE field, update size accordingly */
             if (recv_size == 5) { 
