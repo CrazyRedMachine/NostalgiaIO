@@ -6,7 +6,7 @@ This Readme covers the Arduino firmware only. Find out more about tools in the t
 
 ## Acknowledgments
 
-ACIO layer code heavily based on Bemanitools 5.
+ACIO layer code based on Bemanitools 5.
 
 Multitouch support is based on Eric Troebs' [Touchy.ino](https://gist.github.com/erictroebs/3e6ca8aa2b9ed06e0b5527fd38dd2c2f) (https://github.com/NicoHood/HID/issues/123)
 
@@ -22,11 +22,13 @@ It is recommended to use a latching switch for the MODE button.
 
 ### ACIO (native) mode (plug the device while MODE is on)
 
-In this mode the arduino acts as a passthrough, so that the original data can interact with your device. It's useful if you modded your cab hardware and want to use the extended features for other games but still retain native compatibility with Nostalgia.
+In this mode the arduino is pretty much disabled and acts as a passthrough, so that the original data can interact with your device. It's useful if you modded your cab hardware and want to use the extended features for other games but still retain native compatibility with Nostalgia.
 
 Note that you'll have to manually set the Arduino COM port to COM1 for it to work as the game will only look for the device there and will spawn a KEYBOARD ERROR if not found.
 
-You also need to have one KFCA and one ICCC node on a second acio device on COM2 (you can either use another RS232 to USB adapter for your original hardware, or you might use [ACreal_IO](https://github.com/CrazyRedMachine/ACreal_IO) to simulate them with an arduino MEGA)
+Also note that the Test/Coin/Service buttons from the arduino cannot work in this mode, as in the native mode the game will look for them on the KFCA board :
+
+You need to have one KFCA and one ICCC node on a second acio device on COM2 (you can either use another RS232 to USB adapter for your original hardware, or you might use [ACreal_IO](https://github.com/CrazyRedMachine/ACreal_IO) to simulate them with an arduino MEGA)
 
 ### HID Lights
 
