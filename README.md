@@ -30,18 +30,15 @@ Also note that the Test/Coin/Service buttons from the arduino cannot work in thi
 
 You need to have one KFCA and one ICCC node on a second acio device on COM2 (you can either use another RS232 to USB adapter for your original hardware, or you might use [ACreal_IO](https://github.com/CrazyRedMachine/ACreal_IO) to simulate them with an arduino MEGA)
 
-### HID Lights
+### MIDI mode (plug the device while MODE is switched off)
 
-All panel lights can be controlled with HID messages. Lightmodes and palette can be setup with HID messages as well.
-The HID lights are accessible in MIDI and Multitouch mode but cannot be accessed while in native mode.
+In this mode the panel is a MIDI keyboard (with only white keys). This was mainly developped for use with the PC version of Nostalgia, or as a way to remap the inputs in original data if you want to play with the enhanced light modes. 
 
-### MIDI mode (plug the device while MODE is off)
+The midi keyboard will work with Synthesia or any midi-enabled music software, but the missing black keys will ruin your experience in most cases.
 
-In this mode the panel is a MIDI keyboard (with only white keys).
+### Multitouch mode (switch MODE to on after booting in MIDI mode)
 
-### Multitouch mode (set MODE button to on after booting in MIDI mode)
-
-In this mode the panel acts like virtual touchpresses along the bottom edge of the screen, this was mainly developped for use with "Pianista", but might work for other android games too (**note**: this is untested on IOS).
+In this mode the panel acts like virtual touchpresses along the bottom edge of the screen. This was mainly developped for use with "Pianista", but might work for other android games too (**note**: this is untested on IOS).
 
 - Presses go along the bottom edge of the screen (10% from bottom edge).
 
@@ -50,30 +47,35 @@ And to facilitate menu navigation in some games :
 - While holding TEST button, presses go along the center line (50%)
 - While holding COIN button, presses go along the top edge (10% from top edge)
 
-### Light modes
+### HID Lights
+
+All panel lights can be controlled with HID messages. Lightmodes and palette can be selected with HID messages as well.
+The HID lights are accessible in MIDI and Multitouch mode but cannot be accessed while in native mode.
+
+#### Light modes and palettes
 
 There are a lot of cool lightmodes available. 
-You can set the mode either by sending a value byte to report id 6, or by holding service and pressing the leftmost piano key.
+You can set the mode either by sending a HID message (see `NostModeSwitch` executable/script), or by holding service and pressing the leftmost piano key.
 
-All modes (except rainbow modes) also have several color palettes available which can be switched either by sending a value byte to report id 6 or by holding service and pressing the 2nd leftmost piano key.
+All modes (except rainbow modes) also have several color palettes available which can be switched either by `NostModeSwitch` or by holding service and pressing the 2nd leftmost piano key.
 
-#### HID (with reactive fallback)
+##### HID (with reactive fallback)
 
-#### Combined
+##### Combined
 
-#### Invert
+##### Invert
 
-#### Interlace
+##### Interlace
 
-#### Rainbow
+##### Rainbow
 
-#### Chase
+##### Chase
 
-#### Breath
+##### Breath
 
-#### Fade out
+##### Fade out
 
-#### Rainbow fade out
+##### Rainbow fade out
 
 ## Pinout
 
@@ -101,8 +103,16 @@ Black | 7 | GND | - (GND) | - (GND) | GND
 
 ### Additional buttons
 
-Unlike the other pins, SERVICE/TEST/COIN/MODE buttons can be freely moved to other GPIO by editing the `#define PIN_*` at the beginning of `NostalgiaIO.ino`
+Button | Arduino
+--- | --- 
+MODE | A3
+SERVICE | 5
+TEST (touch center) | 6
+COIN (touch upper) | 7
+
+Unlike the rest of this pinout, these SERVICE/TEST/COIN/MODE buttons can be freely moved to other GPIO by editing the `#define PIN_*` at the beginning of `NostalgiaIO.ino`, as well as `#define UPPER_PIN` and `#define CENTER_PIN` at the beginning of `NOSTHID.cpp`
 
 ## WIP Features
 
+- NostModeSwitch
 - [Misc.] Write a forwarder binary to keypresses so that real cab can play Op3 PC version as well without having to use an arduino.
