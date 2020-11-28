@@ -59,23 +59,49 @@ You can set the mode either by sending a HID message (see `NostModeSwitch` execu
 
 All modes (except rainbow modes) also have several color palettes available which can be switched either by `NostModeSwitch` or by holding service and pressing the 2nd leftmost piano key.
 
+Manual mode and palette switch (ie. using service + piano key button) are automatically saved to the Arduino EEPROM.
+
+Most modes also support HID messages and will keep lighting keys (it is disabled in Rainbow mode due to performance).
+
 ##### HID (with reactive fallback)
+
+Light behavior is dictated only by HID messages. After several seconds without any received HID message, the panel falls back into "reactive mode" (ie. illuminate on key press). It switches back to HID as soon as HID messages come back.
 
 ##### Combined
 
+HID messages OR Pressed keys light them up.
+
 ##### Invert
+
+Panel is always lit, pressing a key turns that key lighting off.
 
 ##### Interlace
 
+Pressed keys illuminate in 3 different colors.
+
 ##### Rainbow
 
-##### Chase
+A rainbow wave runs on the panel while pressed keys turn off.
+
+##### Wave
+
+A single-color wave runs on the panel, while a different color illuminates the pressed keys.
 
 ##### Breath
 
+The panel periodically illuminates in a fade in fade out effect, while a different color illuminates the pressed keys.
+
 ##### Fade out
 
+Keys light up as you press them then slowly fade out once they are released.
+
+##### Velocity Fade out
+
+This is like fade out except the color is determined by how hard you press the key.
+
 ##### Rainbow fade out
+
+This is like fade out except it draws rainbows (and holding keys makes a great color shifting effect).
 
 ## Pinout
 
@@ -114,5 +140,4 @@ Unlike the rest of this pinout, these SERVICE/TEST/COIN/MODE buttons can be free
 
 ## WIP Features
 
-- NostModeSwitch
 - [Misc.] Write a forwarder binary to keypresses so that real cab can play Op3 PC version as well without having to use an arduino.

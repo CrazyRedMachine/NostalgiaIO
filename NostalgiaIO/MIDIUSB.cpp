@@ -204,6 +204,10 @@ static void noteOff(byte channel, byte pitch, byte velocity) {
   MidiUSB.sendMIDI(noteOff);
 }
 
+/* Nostalgia panel only has 14 or 15 velocity values, whereas midi has 127 */
+/* dyn_range sets the span of these 15 values on the midi value (eg. 50 means 
+/* the panel will yield midi velocities between 77 and 127) */
+#define DYN_RANGE 60
 void MIDI_::noteNOST(byte i)
 {
   static uint8_t pitch[28] = {48,50,52,53,55,57,59,60,62,64,65,67,69,71,72,74,76,77,79,81,83,84,86,88,89,91,93,95};
@@ -211,7 +215,10 @@ void MIDI_::noteNOST(byte i)
   
   if (buttonsState[i] && !current[i])
   {
-    noteOn(0,pitch[i],buttonsState[i]+0x30);
+    float max_vel = (i%2==0)?15.:14.;
+    float ratio = (float)(buttonsState[i])*1./max_vel;
+      
+    noteOn(0,pitch[i],(127-DYN_RANGE)+ratio*DYN_RANGE);
     current[i] = true;
   }
   else if (!buttonsState[i] && current[i])

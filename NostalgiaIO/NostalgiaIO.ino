@@ -1,3 +1,5 @@
+
+#include <EEPROM.h>
 #include "NOSTHID.h"
 #include "MIDIUSB.h"
 
@@ -55,9 +57,18 @@ void setup() {
   {
     fdev_setup_stream (&uartout, uart_putchar, NULL, _FDEV_SETUP_WRITE);
     stdout = &uartout ;
-
+    uint8_t lightMode;
+    EEPROM.get(0, lightMode);
+    if (lightMode < 0 || lightMode >= NUM_LIGHT_MODES)
+      lightMode = 0;
+    NOSTHID.setLightMode(lightMode);
+    uint8_t palette;
+    EEPROM.get(1, palette);
+    if (palette < 0 || palette >= NUM_PALETTE)
+      palette = 0;
+    NOSTHID.setPalette(palette);
+  
     NOSTHID.begin();
-    NOSTHID.setLightMode(LIGHTMODE_COMBINED);
     NOSTHID.init_acio();
   }
   
@@ -125,7 +136,7 @@ for (int i = 0; i<28; i++)
       uint8_t mode = NOSTHID.getLightMode()+1;
       if (mode == NUM_LIGHT_MODES) mode = 0;
       NOSTHID.setLightMode(mode);
-      //EEPROM.put(0, mode);
+      EEPROM.put(0, mode);
     }
     else if (!(buttonsState[0])) {
       modeChanged = false;
@@ -136,7 +147,7 @@ if ( (buttonsState[1]) && (palChanged == false)) {
       uint8_t pal = NOSTHID.getPalette()+1;
       if (pal == NUM_PALETTE) pal = 0;
       NOSTHID.setPalette(pal);
-      //EEPROM.put(0, mode);
+      EEPROM.put(1, pal);
     }
     else if (!(buttonsState[1])) {
       palChanged = false;

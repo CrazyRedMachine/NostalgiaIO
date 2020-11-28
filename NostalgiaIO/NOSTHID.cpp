@@ -597,7 +597,7 @@ const uint8_t HSVpower[121] =
 #undef WAVESPEED
 
 #define WAVESPEED 30
-    static color_t color_chase(uint8_t button)
+    static color_t color_wave(uint8_t button)
     {
       static unsigned long startTime = millis();
       uint16_t angle;
@@ -707,6 +707,33 @@ const uint8_t HSVpower[121] =
 #undef FADERATE
 #undef DELTA_HUE
 
+#define FADERATE 80
+    static color_t color_velocity_fade(uint8_t button)
+    {
+      static color_t curr_color[28] = {COLOR_OFF, COLOR_OFF, COLOR_OFF, COLOR_OFF, COLOR_OFF, COLOR_OFF, COLOR_OFF, COLOR_OFF, COLOR_OFF, COLOR_OFF, COLOR_OFF, COLOR_OFF, COLOR_OFF, COLOR_OFF, COLOR_OFF, COLOR_OFF, COLOR_OFF, COLOR_OFF, COLOR_OFF, COLOR_OFF, COLOR_OFF, COLOR_OFF, COLOR_OFF, COLOR_OFF, COLOR_OFF, COLOR_OFF, COLOR_OFF, COLOR_OFF};
+      static byte fade[28] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+      bool pressed = !!buttonsState[button];
+      
+      if (pressed)
+      {
+        /* PALETTE_COLOR_3 on low velocity which goes further towards PALETTE_COLOR_1 as velocity grows */
+      float max_vel = (button%2==0)?15.:14.;
+      float ratio = (float)(buttonsState[button])*1./max_vel;
+      color_t color = {PALETTE_COLOR_3.red * (1-ratio) + PALETTE_COLOR_1.red * ratio, PALETTE_COLOR_3.green * (1-ratio) + PALETTE_COLOR_1.green * ratio, PALETTE_COLOR_3.blue * (1-ratio) + PALETTE_COLOR_1.blue * ratio};
+      curr_color[button] = color;
+      fade[button] = FADERATE;
+      }
+ 
+      if (fade[button]>0)
+      {
+        fade[button]--; 
+      }
+      
+      float brit = fade[button]*256/FADERATE;
+      return {curr_color[button].red* (0.75*(float)brit/256.), curr_color[button].green* (0.75*(float)brit/256.), curr_color[button].blue * (0.75*(float)brit/256.)};
+    }
+#undef FADERATE
+
     void NOSTHID_::updateLeds(bool hid, color_t (*func)(uint8_t)){
       if (hid)
         panb_set_lamp_state_batch((uint8_t*)&(led_data[1]));
@@ -748,14 +775,17 @@ const uint8_t HSVpower[121] =
           //no HID as too much data transfer hinders polling
           updateLeds(false, &color_rainbow);
           break;
-        case LIGHTMODE_CHASE:
-          updateLeds(true, &color_chase);
+        case LIGHTMODE_WAVE:
+          updateLeds(true, &color_wave);
           break;
         case LIGHTMODE_BREATH:
           updateLeds(true, &color_breath);
           break;
         case LIGHTMODE_FADE:
           updateLeds(true, &color_fade);
+          break;
+        case LIGHTMODE_VELOCITY_FADE:
+          updateLeds(true, &color_velocity_fade);
           break;
         case LIGHTMODE_RAINBOW_FADE:
           updateLeds(true, &color_rainbow_fade);
