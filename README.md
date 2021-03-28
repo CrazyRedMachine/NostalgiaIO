@@ -140,4 +140,5 @@ Unlike the rest of this pinout, these SERVICE/TEST/COIN/MODE buttons can be free
 
 ## WIP Features
 
-- [Misc.] Write a forwarder binary to keypresses so that real cab can play Op3 PC version as well without having to use an arduino.
+- [Misc.] ~~Write a forwarder binary to keypresses so that real cab can play Op3 PC version as well without having to use an arduino.~~
+(Op3 PC version cannot run on Win7 Embedded, so there's no real incentive to do this for now.)
