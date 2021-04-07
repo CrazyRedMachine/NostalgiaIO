@@ -107,6 +107,8 @@ This is like fade out except it draws rainbows (and holding keys makes a great c
 
 The arduino can communicate with an acio device on the Serial1 (pins 0 and 1) interface, but in order to do so **it needs RS232 to TTL conversion**. 
 
+There's one 8 pin connector coming out of the keyboard unit. We will use only 5 of the pins from that connector (2 of them to power the keyboard directly from the arduino, and the other 3 of them through the RS232 adapter). You can use 2.8mm female QD (same as those used for small arcade buttons) to connect on the pins from that connector
+
 ### HW-027
 
 The HW-027 rs232 to TTL adapter which is based around the MAX3232 chip is very cheap and easy to find (amazon, aliexpress, etc..)
@@ -134,8 +136,6 @@ Black | 7 | GND | - (GND) | - (GND) | GND
 ### Keyestudio RS232 arduino shield
 
 If you don't want to solder on a small chip, this rs232 adapter shield is also based around the max3232 chip and easy to find (amazon, aliexpress, etc..)
-
-There's one 8 pin connector coming out of the keyboard unit. We will use only 5 of the pins from that connector (2 of them to power the keyboard directly from the arduino, and the other 3 of them through the RS232 adapter). You can use 2.8mm female QD (same as those used for small arcade buttons) to connect on the pins from that connector
 
 ![pinout_shield](https://github.com/CrazyRedMachine/NostalgiaIO/blob/main/nostalgia-pinout-shield.png?raw=true)
 
