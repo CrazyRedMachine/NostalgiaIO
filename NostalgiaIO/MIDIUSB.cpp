@@ -210,8 +210,8 @@ static void noteOff(byte channel, byte pitch, byte velocity) {
 #define DYN_RANGE 60
 void MIDI_::noteNOST(byte i)
 {
-  static uint8_t pitch[28] = {48,50,52,53,55,57,59,60,62,64,65,67,69,71,72,74,76,77,79,81,83,84,86,88,89,91,93,95};
-  static bool current[28] = {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false};
+  static uint8_t pitch[31] = {48,50,52,53,55,57,59,60,62,64,65,67,69,71,72,74,76,77,79,81,83,84,86,88,89,91,93,95,96,97,98};
+  static bool current[31] = {false};
   
   if (buttonsState[i] && !current[i])
   {

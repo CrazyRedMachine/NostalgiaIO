@@ -14,7 +14,7 @@ bool passthrough = false;
 #define PIN_TEST 6
 #define PIN_LED 13
 
-uint8_t buttonsState[30] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+uint8_t buttonsState[31] = {0};
 
 static FILE uartout = {0} ;
 
@@ -94,6 +94,10 @@ void acio_loop(){
    static uint8_t send_multitouch_cooldown = 2;
    static uint8_t send_lamp_cooldown = 5;
     NOSTHID.poll();
+    buttonsState[28] = ( digitalRead(PIN_SERVICE) == LOW ) ? 0xF:0;
+    buttonsState[29] = ( digitalRead(PIN_TEST) == LOW ) ? 0xF:0;
+    buttonsState[30] = ( digitalRead(PIN_COIN) == LOW ) ? 0xF:0;
+
    send_lamp_cooldown--;
     if (send_lamp_cooldown == 0)
     {
@@ -117,8 +121,8 @@ void acio_loop(){
     }
     else 
     {
-      /* midi keyboard */
-for (int i = 0; i<28; i++)
+      /* midi keyboard (28 keys + test service coin) */
+for (int i = 0; i<31; i++)
 {
    MidiUSB.noteNOST(i);
 }
