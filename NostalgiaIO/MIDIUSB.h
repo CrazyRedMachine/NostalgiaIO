@@ -205,7 +205,7 @@ _Pragma("pack()")
  	 By default, will define one midi in and one midi out enpoints.
  */
  
-extern uint8_t buttonsState[30];
+extern uint8_t buttonsState[31];
 
 class MIDI_ : public PluggableUSBModule
 {

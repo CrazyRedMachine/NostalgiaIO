@@ -33,7 +33,7 @@ enum lightmode_e {
   #define DEBUG_VAR(x) 
 #endif
 
-extern uint8_t buttonsState[30];
+extern uint8_t buttonsState[31];
 
 static color_t palette_color[3][3] = {
   {{0x7F,0x23,0},{0,0x7F,0x23},{0x23,0,0x7F}},
