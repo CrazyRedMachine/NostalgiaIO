@@ -1,11 +1,10 @@
 
 #include <EEPROM.h>
 #include "NOSTHID.h"
-#include "MIDIUSB.h"
+#include <Keyboard.h>
 
 #define REPORT_DELAY 1000
 NOSTHID_ NOSTHID;
-MIDI_ MidiUSB;
 
 bool passthrough = false;
 #define PIN_PASSTHROUGH A3
@@ -117,12 +116,11 @@ void acio_loop(){
     }
     else 
     {
-      /* midi keyboard */
+      /* keyboard */
 for (int i = 0; i<28; i++)
 {
-   MidiUSB.noteNOST(i);
+   keyNOST(i);
 }
-      MidiUSB.flush();
     }
     
     lastReport = micros();
@@ -154,6 +152,24 @@ if ( (buttonsState[1]) && (palChanged == false)) {
     }
 
     
+  }
+  
+}
+
+void keyNOST(uint8_t i)
+{
+  static uint8_t pitch[28] = {48,50,52,53,55,57,59,60,62,64,65,67,69,71,72,74,76,77,79,81,83,84,86,88,89,91,93,95};
+  static bool current[28] = {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false};
+  
+  if (buttonsState[i] && !current[i])
+  {
+    Keyboard.press('0'+i);
+    current[i] = true;
+  }
+  else if (!buttonsState[i] && current[i])
+  {
+    Keyboard.release('0'+i);
+    current[i] = false;
   }
   
 }
