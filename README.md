@@ -20,7 +20,7 @@ https://www.instagram.com/p/CH4IKxJl1pu/
 
 It is recommended to use a latching switch for the MODE button.
 
-### ACIO (native) mode (plug the device while MODE is on)
+### ACIO (native) mode (plug the device while holding SERVICE button)
 
 In this mode the arduino is pretty much disabled and acts as a passthrough, so that the original data can interact with your device. It's useful if you modded your cab hardware and want to use the extended features for other games but still retain native compatibility with Nostalgia.
 
@@ -36,7 +36,7 @@ In this mode the panel is a MIDI keyboard (with only white keys). This was mainl
 
 The midi keyboard will work with Synthesia or any midi-enabled music software, but the missing black keys will ruin your experience in most cases.
 
-### Multitouch mode (switch MODE to on after booting in MIDI mode)
+### Multitouch mode (plug the device while MODE is switched on)
 
 In this mode the panel acts like virtual touchpresses along the bottom edge of the screen. This was mainly developped for use with "Pianista", but might work for other android games too (**note**: this is untested on IOS).
 
@@ -50,7 +50,7 @@ And to facilitate menu navigation in some games :
 ### HID Lights
 
 All panel lights can be controlled with HID messages. Lightmodes and palette can be selected with HID messages as well.
-The HID lights are accessible in MIDI and Multitouch mode but cannot be accessed while in native mode.
+The HID lights are accessible in MIDI and Multitouch under win7 but cannot be accessed while in native mode or multitouch under win10.
 
 #### Light modes and palettes
 

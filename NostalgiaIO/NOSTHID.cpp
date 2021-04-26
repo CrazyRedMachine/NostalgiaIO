@@ -15,9 +15,7 @@
 /* number of physical keys which make up one virtual key (useless, please leave on 1) */
 #define BLOCK_SIZE 1
 
-
-
-static const uint8_t _hidReportDescriptor[] PROGMEM = {
+static const uint8_t _hidReportDescriptorTouch[] PROGMEM = {
   0x05, 0x0D,                    // USAGE_PAGE(Digitizers)
   0x09, 0x04,                    // USAGE     (NOSTHID Screen)
   0xA1, 0x01,                    // COLLECTION(Application)
@@ -198,6 +196,189 @@ static const uint8_t _hidReportDescriptor[] PROGMEM = {
   // byte 6,7 -> absolute Y coordinate  (0...10000)
 };
 
+static const uint8_t _hidReportDescriptorLights[] PROGMEM = {
+  0x05, 0x01,                    // USAGE_PAGE(Digitizers)
+  0x09, 0x04,                    // USAGE     (NOSTHID Screen)
+  0xA1, 0x01,                    // COLLECTION(Application)
+  0x85, REPORTID_TOUCH,          //   REPORT_ID (NOSTHID)
+
+  // define the maximum amount of fingers that the device supports
+  0x09, 0x55,                    //   USAGE (Contact Count Maximum)
+  0x25, CONTACT_COUNT_MAXIMUM,   //   LOGICAL_MAXIMUM (CONTACT_COUNT_MAXIMUM)
+  0xB1, 0x02,                    //   FEATURE (Data,Var,Abs)
+
+  // define the actual amount of fingers that are concurrently touching the screen
+  0x09, 0x54,                    //   USAGE (Contact count)
+  0x95, 0x01,                    //   REPORT_COUNT(1)
+  0x75, 0x08,                    //   REPORT_SIZE (8)
+  0x81, 0x02,                    //   INPUT (Data,Var,Abs)
+
+  // declare a finger collection
+  0x09, 0x22,                    //   USAGE (Finger)
+  0xA1, 0x02,                    //   COLLECTION (Logical)
+
+  // declare an identifier for the finger
+  0x09, 0x51,                    //     USAGE (Contact Identifier)
+  0x75, 0x08,                    //     REPORT_SIZE (8)
+  0x95, 0x01,                    //     REPORT_COUNT (1)
+  0x81, 0x02,                    //     INPUT (Data,Var,Abs)
+
+  // declare Tip Switch and In Range
+  0x09, 0x42,                    //     USAGE (Tip Switch)
+  0x09, 0x32,                    //     USAGE (In Range)
+  0x15, 0x00,                    //     LOGICAL_MINIMUM (0)
+  0x25, 0x01,                    //     LOGICAL_MAXIMUM (1)
+  0x75, 0x01,                    //     REPORT_SIZE (1)
+  0x95, 0x02,                    //     REPORT_COUNT(2)
+  0x81, 0x02,                    //     INPUT (Data,Var,Abs)
+
+  // declare the remaining 6 bits of the first data byte as constant -> the driver will ignore them
+  0x95, 0x06,                    //     REPORT_COUNT (6)
+  0x81, 0x03,                    //     INPUT (Cnst,Ary,Abs)
+
+  // define absolute X and Y coordinates of 16 bit each (percent values multiplied with 100)
+  0x05, 0x01,                    //     USAGE_PAGE (Generic Desktop)
+  0x09, 0x30,                    //     Usage (X)
+  0x09, 0x31,                    //     Usage (Y)
+  0x15, 0x00,              //     Logical Minimum (0)
+  0x25, 0x64,              //     Logical Maximum (100)
+  0x35, 0x00,              //     Physical Minimum (0)
+  0x45, 0x64,             //     Physical Maximum (100)
+  0x66, 0x00, 0x00,              //     UNIT (None)
+  0x75, 0x08,                    //     Report Size (8),
+  0x95, 0x02,                    //     Report Count (2),
+  0x81, 0x02,                    //     Input (Data,Var,Abs)
+  0xC0,                          //   END_COLLECTION
+
+  0x85, 0x02,        //   Report ID (2)   
+      // 14 RGB leds (42 leds)
+    0x95, 0x2A,        //   REPORT_COUNT
+    0x75, 0x08,                    //   REPORT_SIZE (8)
+    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
+    0x26, 0xff, 0x00,              //   LOGICAL_MAXIMUM (255)
+    0x05, 0x0a,                    //   USAGE_PAGE (Ordinals)
+    // Locals
+    0x19, 0x01,                    //   USAGE_MINIMUM (Instance 1)
+    0x29, 0x2A,        //   USAGE_MAXIMUM (Instance n)
+    0xA1, 0x02,        //   Collection (Logical)
+      0x09, 0x01,        //       Usage (Indicator Red)
+      0x09, 0x02,        //       Usage (Indicator Red)
+      0x09, 0x03,        //       Usage (Indicator Red)
+      0x09, 0x04,        //       Usage (Indicator Red)
+      0x09, 0x05,        //       Usage (Indicator Red)
+      0x09, 0x06,        //       Usage (Indicator Red)
+      0x09, 0x07,        //       Usage (Indicator Red)
+      0x09, 0x08,        //       Usage (Indicator Red)
+      0x09, 0x09,        //       Usage (Indicator Red)
+      0x09, 0x0A,        //       Usage (Indicator Red)
+      0x09, 0x0B,        //       Usage (Indicator Red)
+      0x09, 0x0C,        //       Usage (Indicator Red)
+      0x09, 0x0D,        //       Usage (Indicator Red)
+      0x09, 0x0E,        //       Usage (Indicator Red)
+      0x09, 0x0F,        //       Usage (Indicator Red)
+      0x09, 0x10,        //       Usage (Indicator Red)
+      0x09, 0x11,        //       Usage (Indicator Red)
+      0x09, 0x12,        //       Usage (Indicator Red)
+      0x09, 0x13,        //       Usage (Indicator Red)
+      0x09, 0x14,        //       Usage (Indicator Red)
+      0x09, 0x15,        //       Usage (Indicator Red)
+      0x09, 0x16,        //       Usage (Indicator Red)
+      0x09, 0x17,        //       Usage (Indicator Red)
+      0x09, 0x18,        //       Usage (Indicator Red)
+      0x09, 0x19,        //       Usage (Indicator Red)
+      0x09, 0x1A,        //       Usage (Indicator Red)
+      0x09, 0x1B,        //       Usage (Indicator Red)
+      0x09, 0x1C,        //       Usage (Indicator Red)
+      0x09, 0x1D,        //       Usage (Indicator Red)
+      0x09, 0x1E,        //       Usage (Indicator Red)
+      0x09, 0x1F,        //       Usage (Indicator Red)
+      0x09, 0x20,        //       Usage (Indicator Red)
+      0x09, 0x21,        //       Usage (Indicator Red)
+      0x09, 0x22,        //       Usage (Indicator Red)
+      0x09, 0x23,        //       Usage (Indicator Red)
+      0x09, 0x24,        //       Usage (Indicator Red)
+      0x09, 0x25,        //       Usage (Indicator Red)
+      0x09, 0x26,        //       Usage (Indicator Red)
+      0x09, 0x27,        //       Usage (Indicator Red)
+      0x09, 0x28,        //       Usage (Indicator Red)
+      0x09, 0x29,        //       Usage (Indicator Red)
+      0x09, 0x2A,        //       Usage (Indicator Red)
+      0x91, 0x02,        //     Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
+    0xC0,              //   End Collection (RGB led)
+
+  0x85, 0x03,        //   Report ID (3)   
+      // 14 RGB leds (42 leds)
+    0x95, 0x2A,        //   REPORT_COUNT
+    0x75, 0x08,                    //   REPORT_SIZE (8)
+    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
+    0x26, 0xff, 0x00,              //   LOGICAL_MAXIMUM (255)
+    0x05, 0x0a,                    //   USAGE_PAGE (Ordinals)
+    0x19, 0x2B,                    //   USAGE_MINIMUM (Instance 1)
+    0x29, 0x54,        //   USAGE_MAXIMUM (Instance n)
+    0xA1, 0x02,        //   Collection (Logical)
+      0x09, 0x2B,        //       Usage (Indicator Red)
+      0x09, 0x2C,        //       Usage (Indicator Red)
+      0x09, 0x2D,        //       Usage (Indicator Red)
+      0x09, 0x2E,        //       Usage (Indicator Red)
+      0x09, 0x2F,        //       Usage (Indicator Red)
+      0x09, 0x30,        //       Usage (Indicator Red)
+      0x09, 0x31,        //       Usage (Indicator Red)
+      0x09, 0x32,        //       Usage (Indicator Red)
+      0x09, 0x33,        //       Usage (Indicator Red)
+      0x09, 0x34,        //       Usage (Indicator Red)
+      0x09, 0x35,        //       Usage (Indicator Red)
+      0x09, 0x36,        //       Usage (Indicator Red)
+      0x09, 0x37,        //       Usage (Indicator Red)
+      0x09, 0x38,        //       Usage (Indicator Red)
+      0x09, 0x39,        //       Usage (Indicator Red)
+      0x09, 0x3A,        //       Usage (Indicator Red)
+      0x09, 0x3B,        //       Usage (Indicator Red)
+      0x09, 0x3C,        //       Usage (Indicator Red)
+      0x09, 0x3D,        //       Usage (Indicator Red)
+      0x09, 0x3E,        //       Usage (Indicator Red)
+      0x09, 0x3F,        //       Usage (Indicator Red)
+      0x09, 0x40,        //       Usage (Indicator Red)
+      0x09, 0x41,        //       Usage (Indicator Red)
+      0x09, 0x42,        //       Usage (Indicator Red)
+      0x09, 0x43,        //       Usage (Indicator Red)
+      0x09, 0x44,        //       Usage (Indicator Red)
+      0x09, 0x45,        //       Usage (Indicator Red)
+      0x09, 0x46,        //       Usage (Indicator Red)
+      0x09, 0x47,        //       Usage (Indicator Red)
+      0x09, 0x48,        //       Usage (Indicator Red)
+      0x09, 0x49,        //       Usage (Indicator Red)
+      0x09, 0x4A,        //       Usage (Indicator Red)
+      0x09, 0x4B,        //       Usage (Indicator Red)
+      0x09, 0x4C,        //       Usage (Indicator Red)
+      0x09, 0x4D,        //       Usage (Indicator Red)
+      0x09, 0x4E,        //       Usage (Indicator Red)
+      0x09, 0x4F,        //       Usage (Indicator Red)
+      0x09, 0x50,        //       Usage (Indicator Red)
+      0x09, 0x51,        //       Usage (Indicator Red)
+      0x09, 0x52,        //       Usage (Indicator Red)
+      0x09, 0x53,        //       Usage (Indicator Red)
+      0x09, 0x54,        //       Usage (Indicator Red)
+      0x91, 0x02,        //     Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
+    0xC0,              //   End Collection (RGB led)
+
+    /* HID modeswitch paletteswitch request (no usage page etc so it's not picked up by the tools) */
+  0x85, 0x06,        //   Report ID (6)
+    0x95, 0x02,        //     Report Count (1)
+    0x75, 0x08,        //     Report Size (9)
+    0x91, 0x03,        //     Input (Const,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
+  
+  0xC0                           // END_COLLECTION
+
+  // with this declaration a data packet must be sent as:
+  // byte 1   -> "contact count"        (always == 1)
+  // byte 2   -> "contact identifier"   (any value)
+  // byte 3   -> "Tip Switch" state     (bit 0 = Tip Switch up/down, bit 1 = In Range)
+  // byte 4,5 -> absolute X coordinate  (0...10000)
+  // byte 6,7 -> absolute Y coordinate  (0...10000)
+};
+
+uint8_t *_hidReportDescriptor;
+uint16_t _hidReportDescriptorSize;
 
 typedef struct Finger {
   int contact;
@@ -240,8 +421,20 @@ static bool stack_isempty(stack *st)
   return (st->size == 0);
 }
 
+#define PIN_MODE A3
 NOSTHID_::NOSTHID_(void) : PluggableUSBModule(1, 1, epType) {
    epType[0] = EP_TYPE_INTERRUPT_IN;
+   
+  if (digitalRead(PIN_MODE) == LOW)
+   {
+    _hidReportDescriptor = _hidReportDescriptorTouch;
+    _hidReportDescriptorSize = sizeof(_hidReportDescriptorTouch);
+   }
+   else
+   {
+    _hidReportDescriptor = _hidReportDescriptorLights;
+    _hidReportDescriptorSize = sizeof(_hidReportDescriptorLights);
+   }
       PluggableUSB().plug(this);
     }
 
@@ -249,7 +442,7 @@ NOSTHID_::NOSTHID_(void) : PluggableUSBModule(1, 1, epType) {
       *interfaceCount += 1; // uses 1
       HIDDescriptor hidInterface = {
         D_INTERFACE(pluggedInterface, 1, USB_DEVICE_CLASS_HUMAN_INTERFACE, HID_SUBCLASS_NONE, HID_PROTOCOL_NONE),
-        D_HIDREPORT(sizeof(_hidReportDescriptor)),
+        D_HIDREPORT(_hidReportDescriptorSize),
         D_ENDPOINT(USB_ENDPOINT_IN(pluggedEndpoint), USB_ENDPOINT_TYPE_INTERRUPT, USB_EP_SIZE, 0x01) // this last parameter is the bInterval (requested polling rate)
       };
       return USB_SendControl(0, &hidInterface, sizeof(hidInterface));
@@ -264,7 +457,7 @@ NOSTHID_::NOSTHID_(void) : PluggableUSBModule(1, 1, epType) {
       // In a HID Class Descriptor wIndex contains the interface number
       if (setup.wIndex != pluggedInterface) { return 0; }
 
-      return USB_SendControl(TRANSFER_PGM, _hidReportDescriptor, sizeof(_hidReportDescriptor));
+      return USB_SendControl(TRANSFER_PGM, _hidReportDescriptor, _hidReportDescriptorSize);
     }
     
     bool NOSTHID_::setup(USBSetup& setup)

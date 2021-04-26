@@ -8,11 +8,12 @@ NOSTHID_ NOSTHID;
 MIDI_ MidiUSB;
 
 bool passthrough = false;
-#define PIN_PASSTHROUGH A3
+#define PIN_MODE A3
 #define PIN_COIN 7
 #define PIN_SERVICE 5 
 #define PIN_TEST 6
 #define PIN_LED 13
+#define PIN_PASSTHROUGH PIN_SERVICE
 
 uint8_t buttonsState[31] = {0};
 
@@ -28,7 +29,7 @@ void setup() {
   Serial1.begin(115200);
   Serial.begin(115200);
 
-  pinMode(PIN_PASSTHROUGH, INPUT_PULLUP);
+  pinMode(PIN_MODE, INPUT_PULLUP);
   pinMode(PIN_COIN, INPUT_PULLUP);
   pinMode(PIN_SERVICE, INPUT_PULLUP);
   pinMode(PIN_TEST, INPUT_PULLUP);
@@ -54,7 +55,7 @@ void setup() {
   }
 
   if (!passthrough)
-  {
+  { 
     fdev_setup_stream (&uartout, uart_putchar, NULL, _FDEV_SETUP_WRITE);
     stdout = &uartout ;
     uint8_t lightMode;
@@ -80,7 +81,6 @@ void loop() {
       passthrough_loop();
     }
   }
-
   
   while (true){
       acio_loop();
@@ -104,11 +104,12 @@ void acio_loop(){
       NOSTHID.updateLeds();
       send_lamp_cooldown = 5;
     }
+  
+  static uint8_t initial_mode = digitalRead(PIN_MODE);
   /* USB DATA */
   if ( ( (micros() - lastReport) >= REPORT_DELAY) )
-  {
-   
-    if (digitalRead(PIN_PASSTHROUGH) == LOW) {
+  {    
+    if (initial_mode == LOW) {
       /* multitouch */
       
       send_multitouch_cooldown--;
