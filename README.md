@@ -52,6 +52,171 @@ And to facilitate menu navigation in some games :
 All panel lights can be controlled with HID messages. Lightmodes and palette can be selected with HID messages as well.
 The HID lights are accessible in MIDI and Multitouch under win7 but cannot be accessed while in native mode or multitouch under win10.
 
+To help speed up the mapping process under spicetools, rather than mapping everything by hand, edit `%appdata%\spicetools.xml` (**make a copy first in case anything goes wrong**), then find the line containing `<game name="Nostalgia">`, up until the next occurrence of `</game>`, and replace the whole thing by this block instead :
+   
+```
+    <game name="Nostalgia">
+        <buttons>
+            <button name="Service" vkey="96" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Test" vkey="97" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Coin Mech" vkey="98" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 1" vkey="48" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 2" vkey="50" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 3" vkey="52" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 4" vkey="53" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 5" vkey="55" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 6" vkey="57" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 7" vkey="59" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 8" vkey="60" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 9" vkey="62" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 10" vkey="64" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 11" vkey="65" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 12" vkey="67" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 13" vkey="69" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 14" vkey="71" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 15" vkey="72" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 16" vkey="74" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 17" vkey="76" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 18" vkey="77" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 19" vkey="79" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 20" vkey="81" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 21" vkey="83" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 22" vkey="84" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 23" vkey="86" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 24" vkey="88" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 25" vkey="89" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 26" vkey="91" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 27" vkey="93" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+            <button name="Key 28" vkey="95" analogtype="0" devid=";MIDI;0;Arduino Leonardo;65535;65535"/>
+        </buttons>
+        <analogs>
+            <analog name="Key 1" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+            <analog name="Key 2" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+            <analog name="Key 3" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+            <analog name="Key 4" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+            <analog name="Key 5" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+            <analog name="Key 6" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+            <analog name="Key 7" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+            <analog name="Key 8" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+            <analog name="Key 9" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+            <analog name="Key 10" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+            <analog name="Key 11" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+            <analog name="Key 12" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+            <analog name="Key 13" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+            <analog name="Key 14" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+            <analog name="Key 15" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+            <analog name="Key 16" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+            <analog name="Key 17" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+            <analog name="Key 18" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+            <analog name="Key 19" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+            <analog name="Key 20" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+            <analog name="Key 21" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+            <analog name="Key 22" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+            <analog name="Key 23" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+            <analog name="Key 24" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+            <analog name="Key 25" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+            <analog name="Key 26" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+            <analog name="Key 27" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+            <analog name="Key 28" index="255" sensivity="1" devid="" invert="false" smoothing="false"/>
+        </analogs>
+        <lights>
+            <light name="Title R" index="0" devid=""/>
+            <light name="Title G" index="0" devid=""/>
+            <light name="Title B" index="0" devid=""/>
+            <light name="Bottom R" index="0" devid=""/>
+            <light name="Bottom G" index="0" devid=""/>
+            <light name="Bottom B" index="0" devid=""/>
+            <light name="Key 1 R" index="41" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 1 G" index="40" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 1 B" index="39" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 2 R" index="38" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 2 G" index="37" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 2 B" index="36" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 3 R" index="35" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 3 G" index="34" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 3 B" index="33" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 4 R" index="32" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 4 G" index="31" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 4 B" index="30" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 5 R" index="29" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 5 G" index="28" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 5 B" index="27" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 6 R" index="26" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 6 G" index="25" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 6 B" index="24" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 7 R" index="23" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 7 G" index="22" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 7 B" index="21" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 8 R" index="20" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 8 G" index="19" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 8 B" index="18" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 9 R" index="17" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 9 G" index="16" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 9 B" index="15" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 10 R" index="14" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 10 G" index="13" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 10 B" index="12" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 11 R" index="11" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 11 G" index="10" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 11 B" index="9" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 12 R" index="8" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 12 G" index="7" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 12 B" index="6" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 13 R" index="5" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 13 G" index="4" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 13 B" index="3" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 14 R" index="2" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 14 G" index="1" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 14 B" index="0" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 15 R" index="83" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 15 G" index="82" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 15 B" index="81" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 16 R" index="80" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 16 G" index="79" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 16 B" index="78" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 17 R" index="77" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 17 G" index="76" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 17 B" index="75" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 18 R" index="74" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 18 G" index="73" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 18 B" index="72" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 19 R" index="71" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 19 G" index="70" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 19 B" index="69" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 20 R" index="68" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 20 G" index="67" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 20 B" index="66" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 21 R" index="65" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 21 G" index="64" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 21 B" index="63" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 22 R" index="62" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 22 G" index="61" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 22 B" index="60" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 23 R" index="59" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 23 G" index="58" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 23 B" index="57" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 24 R" index="56" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 24 G" index="55" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 24 B" index="54" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 25 R" index="53" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 25 G" index="52" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 25 B" index="51" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 26 R" index="50" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 26 G" index="49" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 26 B" index="48" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 27 R" index="47" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 27 G" index="46" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 27 B" index="45" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 28 R" index="44" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 28 G" index="43" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+            <light name="Key 28 B" index="42" devid="\\?\HID#VID_2341&amp;PID_8036&amp;MI_02#7&amp;b5b0acb&amp;0&amp;0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"/>
+        </lights>
+        <options/>
+    </game>
+```
+
+**Note:** the string in quotes after `devid=` is your device path. It might differ in your install, so if that doesn't work, manually map one of your lights then use find/replace option to replace my devid with yours.
+    
 #### Light modes and palettes
 
 There are a lot of cool lightmodes available. 
