@@ -50,7 +50,111 @@ And to facilitate menu navigation in some games :
 ### HID Lights
 
 All panel lights can be controlled with HID messages. Lightmodes and palette can be selected with HID messages as well.
-The HID lights are accessible in MIDI and Multitouch under win7 but cannot be accessed while in native mode or multitouch under win10.
+The HID lights are accessible in MIDI and Multitouch under win7 but cannot be accessed while in native mode, nor in multitouch under win10.
+    
+#### Light modes and palettes
+
+There are a lot of cool lightmodes available. 
+You can set the mode either by sending a HID message (see `NostModeSwitch` executable/script), or by holding service and pressing the leftmost piano key.
+
+All modes (except rainbow modes) also have several color palettes available which can be switched either by `NostModeSwitch` or by holding service and pressing the 2nd leftmost piano key.
+
+Manual mode and palette switch (ie. using service + piano key button) are automatically saved to the Arduino EEPROM.
+
+Most modes also support HID messages and will keep lighting keys (it is disabled in Rainbow mode due to performance issues).
+
+##### HID (with reactive fallback)
+
+Light behavior is dictated only by HID messages. After several seconds without any received HID message, the panel falls back into "reactive mode" (ie. illuminate on key press). It switches back to HID as soon as HID messages come back.
+
+##### Combined
+
+HID messages OR Pressed keys light them up.
+
+##### Invert
+
+Panel is always lit, pressing a key turns that key lighting off.
+
+##### Interlace
+
+Pressed keys illuminate in 3 different colors.
+
+##### Rainbow
+
+A rainbow wave runs on the panel while pressed keys turn off.
+
+##### Wave
+
+A single-color wave runs on the panel, while a different color illuminates the pressed keys.
+
+##### Breath
+
+The panel periodically illuminates in a fade in fade out effect, while a different color illuminates the pressed keys.
+
+##### Fade out
+
+Keys light up as you press them then slowly fade out once they are released.
+
+##### Velocity Fade out
+
+This is like fade out except the color is determined by how hard you press the key.
+
+##### Rainbow fade out
+
+This is like fade out except it draws rainbows (and holding keys makes a great color shifting effect).
+
+## Pinout
+
+The arduino can communicate with an acio device on the Serial1 (pins 0 and 1) interface, but in order to do so **it needs RS232 to TTL conversion**. 
+
+There's one big white 8 pin connector (JST YL**R**-08V) coming out of the keyboard unit. We will use only 5 of the pins from that connector (2 of them to power the keyboard directly from the arduino, and the other 3 of them through the RS232 adapter). 
+
+You can buy the matching connector, JST YL**P**-08V, with SYF-01T-P0.5A crimps (SYF-41T-P0.5A will do to but theoretically is made for thicker wires so you might have trouble crimping them), that will plug into the piano connector.
+
+Or you can use 2.8mm female QD (same as those used for small arcade buttons) to connect directly to the pins inside the YL**R**-08V, that should work well and QD are much more easily available.
+
+![qd](https://github.com/CrazyRedMachine/NostalgiaIO/blob/main/nostalgia-qd.png?raw=true)
+
+### HW-027
+
+The HW-027 rs232 to TTL adapter which is based around the MAX3232 chip is very cheap and easy to find (amazon, aliexpress, etc..)
+
+**BEWARE**: Please use the arduino 3.3V pin to power the HW-027 adapter, as most often than not, powering the chip with 5V will cause it to overheat and stop working.
+
+![pinout](https://github.com/CrazyRedMachine/NostalgiaIO/blob/main/nostalgia-pinout.png?raw=true)
+
+Color | Pin | Keyboard | RS232 | TTL | Arduino
+--- | --- | --- | --- | --- | ---
+Black | 1 | GND |  | | GND
+Red | 2 | +5V | | | +5V
+Green  | 3 | RXDA0 | <- (TX) | <- (RX) | 1 
+. | 4 |  | | |
+Blue  | 5 | TXDA0 | -> (RX) | -> (TX) | 0  
+. | 6 |  | |
+Black | 7 | GND | - (GND) | - (GND) | GND 
+. | 8 |  | |
+.| | | | + (3.3V) | +3.3V
+
+**Note:** Make sure to wire the keyboard to the RS232 side of the adapter, and the arduino to the TTL side. Use the 3.3v pin to power the MAX3232 chip **from the TTL side**.
+
+### Keyestudio RS232 arduino shield
+
+If you don't want to solder on a small chip, this rs232 adapter shield is also based around the max3232 chip and easy to find (amazon, aliexpress, etc..)
+
+![pinout_shield](https://github.com/CrazyRedMachine/NostalgiaIO/blob/main/nostalgia-pinout-shield.png?raw=true)
+
+### Additional buttons
+
+Button | Arduino
+--- | --- 
+MODE | A3
+SERVICE | 5
+TEST (touch center) | 6
+COIN (touch upper) | 7
+
+Unlike the rest of this pinout, these SERVICE/TEST/COIN/MODE buttons can be freely moved to other GPIO by editing the `#define PIN_*` at the beginning of `NostalgiaIO.ino`, as well as `#define UPPER_PIN` and `#define CENTER_PIN` at the beginning of `NOSTHID.cpp`
+
+## Appendix: spicetools config
 
 To help speed up the mapping process under spicetools, rather than mapping everything by hand, edit `%appdata%\spicetools.xml` (**make a copy first in case anything goes wrong**), then find the line containing `<game name="Nostalgia">`, up until the next occurrence of `</game>`, and replace the whole thing by this block instead :
    
@@ -216,106 +320,9 @@ To help speed up the mapping process under spicetools, rather than mapping every
 ```
 
 **Note:** the string in quotes after `devid=` is your device path. It might differ in your install, so if that doesn't work, manually map one of your lights then use find/replace option to replace my devid with yours.
-    
-#### Light modes and palettes
-
-There are a lot of cool lightmodes available. 
-You can set the mode either by sending a HID message (see `NostModeSwitch` executable/script), or by holding service and pressing the leftmost piano key.
-
-All modes (except rainbow modes) also have several color palettes available which can be switched either by `NostModeSwitch` or by holding service and pressing the 2nd leftmost piano key.
-
-Manual mode and palette switch (ie. using service + piano key button) are automatically saved to the Arduino EEPROM.
-
-Most modes also support HID messages and will keep lighting keys (it is disabled in Rainbow mode due to performance).
-
-##### HID (with reactive fallback)
-
-Light behavior is dictated only by HID messages. After several seconds without any received HID message, the panel falls back into "reactive mode" (ie. illuminate on key press). It switches back to HID as soon as HID messages come back.
-
-##### Combined
-
-HID messages OR Pressed keys light them up.
-
-##### Invert
-
-Panel is always lit, pressing a key turns that key lighting off.
-
-##### Interlace
-
-Pressed keys illuminate in 3 different colors.
-
-##### Rainbow
-
-A rainbow wave runs on the panel while pressed keys turn off.
-
-##### Wave
-
-A single-color wave runs on the panel, while a different color illuminates the pressed keys.
-
-##### Breath
-
-The panel periodically illuminates in a fade in fade out effect, while a different color illuminates the pressed keys.
-
-##### Fade out
-
-Keys light up as you press them then slowly fade out once they are released.
-
-##### Velocity Fade out
-
-This is like fade out except the color is determined by how hard you press the key.
-
-##### Rainbow fade out
-
-This is like fade out except it draws rainbows (and holding keys makes a great color shifting effect).
-
-## Pinout
-
-The arduino can communicate with an acio device on the Serial1 (pins 0 and 1) interface, but in order to do so **it needs RS232 to TTL conversion**. 
-
-There's one 8 pin connector coming out of the keyboard unit. We will use only 5 of the pins from that connector (2 of them to power the keyboard directly from the arduino, and the other 3 of them through the RS232 adapter). You can use 2.8mm female QD (same as those used for small arcade buttons) to connect on the pins from that connector
-
-### HW-027
-
-The HW-027 rs232 to TTL adapter which is based around the MAX3232 chip is very cheap and easy to find (amazon, aliexpress, etc..)
-
-**BEWARE**: Please use the arduino 3.3V pin to power the HW-027 adapter, as most often than not, powering the chip with 5V will cause it to overheat and stop working.
-
-There's one 8 pin connector coming out of the keyboard unit. We will use only 5 of the pins from that connector (2 of them to power the keyboard directly from the arduino, and the other 3 of them through the RS232 adapter). You can use 2.8mm female QD (same as those used for small arcade buttons) to connect on the pins from that connector
-
-![pinout](https://github.com/CrazyRedMachine/NostalgiaIO/blob/main/nostalgia-pinout.png?raw=true)
-
-Color | Pin | Keyboard | RS232 | TTL | Arduino
---- | --- | --- | --- | --- | ---
-Black | 1 | GND |  | | GND
-Red | 2 | +5V | | | +5V
-Green  | 3 | RXDA0 | <- (TX) | <- (RX) | 1 
-. | 4 |  | | |
-Blue  | 5 | TXDA0 | -> (RX) | -> (TX) | 0  
-. | 6 |  | |
-Black | 7 | GND | - (GND) | - (GND) | GND 
-. | 8 |  | |
-.| | | | + (3.3V) | +3.3V
-
-**Note:** Make sure to wire the keyboard to the RS232 side of the adapter, and the arduino to the TTL side. Use the 3.3v pin to power the MAX3232 chip **from the TTL side**.
-
-### Keyestudio RS232 arduino shield
-
-If you don't want to solder on a small chip, this rs232 adapter shield is also based around the max3232 chip and easy to find (amazon, aliexpress, etc..)
-
-![pinout_shield](https://github.com/CrazyRedMachine/NostalgiaIO/blob/main/nostalgia-pinout-shield.png?raw=true)
-
-### Additional buttons
-
-Button | Arduino
---- | --- 
-MODE | A3
-SERVICE | 5
-TEST (touch center) | 6
-COIN (touch upper) | 7
-
-Unlike the rest of this pinout, these SERVICE/TEST/COIN/MODE buttons can be freely moved to other GPIO by editing the `#define PIN_*` at the beginning of `NostalgiaIO.ino`, as well as `#define UPPER_PIN` and `#define CENTER_PIN` at the beginning of `NOSTHID.cpp`
 
 ## WIP Features
 
+- [Misc.] Write an auto-config app
 - [Misc.] ~~Write a forwarder binary to keypresses so that real cab can play Op3 PC version as well without having to use an arduino.~~
 (Op3 PC version cannot run on Win7 Embedded, so there's no real incentive to do this for now.)
