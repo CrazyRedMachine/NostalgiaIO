@@ -14,6 +14,16 @@ MIDI support is based on Gary Grewal's [MIDIUSB Library](https://github.com/ardu
 
 ## Demo
 
+### Impressive play by pro gamer EXP on Nostalgia Op 3 (PC)
+
+https://www.youtube.com/watch?v=mbT5lQpTMFw
+
+### Firmware running on a fullsize cab
+
+https://www.instagram.com/p/COM2fmKIh7q/
+
+### A couple light effects
+
 https://www.instagram.com/p/CH4IKxJl1pu/
 
 ## Features
