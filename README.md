@@ -30,17 +30,9 @@ https://www.instagram.com/p/CH4IKxJl1pu/
 
 It is recommended to use a latching switch for the MODE button.
 
-### ACIO (native) mode (plug the device while holding SERVICE button)
-
-In this mode the arduino is pretty much disabled and acts as a passthrough, so that the original data can interact with your device. It's useful if you modded your cab hardware and want to use the extended features for other games but still retain native compatibility with Nostalgia.
-
-Note that you'll have to manually set the Arduino COM port to COM1 for it to work as the game will only look for the device there and will spawn a KEYBOARD ERROR if not found.
-
-Also note that the Test/Coin/Service buttons from the arduino cannot work in this mode, as in the native mode the game will look for them on the KFCA board :
-
-You need to have one KFCA and one ICCC node on a second acio device on COM2 (you can either use another RS232 to USB adapter for your original hardware, or you might use [ACreal_IO](https://github.com/CrazyRedMachine/ACreal_IO) to simulate them with an arduino MEGA)
-
 ### MIDI mode (plug the device while MODE is switched off)
+
+This is the firmware default mode (you can also access it by not wiring a mode switch at all if you are not interested in multitouch mode)
 
 In this mode the panel is a MIDI keyboard (with only white keys). This was mainly developped for use with the PC version of Nostalgia, or as a way to remap the inputs in original data if you want to play with the enhanced light modes. 
 
@@ -57,6 +49,16 @@ And to facilitate menu navigation in some games :
 - While holding TEST button, presses go along the center line (50%)
 - While holding COIN button, presses go along the top edge (10% from top edge)
 
+### ACIO (native) mode (plug the device while holding SERVICE button)
+
+In this mode the arduino is pretty much disabled and acts as a passthrough, so that the original data can interact with your device. It's useful if you modded your cab hardware and want to use the extended features for other games but still retain native compatibility with Nostalgia.
+
+Note that you'll have to manually set the Arduino COM port to COM1 for it to work as the game will only look for the device there and will spawn a KEYBOARD ERROR if not found.
+
+Also note that the Test/Coin/Service buttons from the arduino cannot work in this mode, as in the native mode the game will look for them on the KFCA board :
+
+You need to have one KFCA and one ICCC node on a second acio device on COM2 (you can either use another RS232 to USB adapter for your original hardware, or you might use [ACreal_IO](https://github.com/CrazyRedMachine/ACreal_IO) to simulate them with an arduino MEGA)
+
 ### HID Lights
 
 All panel lights can be controlled with HID messages. Lightmodes and palette can be selected with HID messages as well.
@@ -65,9 +67,9 @@ The HID lights are accessible in MIDI and Multitouch under win7 but cannot be ac
 #### Light modes and palettes
 
 There are a lot of cool lightmodes available. 
-You can set the mode either by sending a HID message (see `NostModeSwitch` executable/script), or by holding service and pressing the leftmost piano key.
+You can set the mode either by sending a HID message (see `NostModeSwitch` executable/script), or by **holding service and pressing the leftmost piano key**.
 
-All modes (except rainbow modes) also have several color palettes available which can be switched either by `NostModeSwitch` or by holding service and pressing the 2nd leftmost piano key.
+All modes (except rainbow modes) also have several color palettes available which can be switched either by `NostModeSwitch` or by **holding service and pressing the 2nd leftmost piano key**.
 
 Manual mode and palette switch (ie. using service + piano key button) are automatically saved to the Arduino EEPROM.
 
