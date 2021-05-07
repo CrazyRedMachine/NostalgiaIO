@@ -197,59 +197,24 @@ static const uint8_t _hidReportDescriptorTouch[] PROGMEM = {
 };
 
 static const uint8_t _hidReportDescriptorLights[] PROGMEM = {
-  0x05, 0x01,                    // USAGE_PAGE(Digitizers)
-  0x09, 0x04,                    // USAGE     (NOSTHID Screen)
+  0x05, 0x01,                    // USAGE_PAGE(General Desktop)
+  0x09, 0x04,                    // USAGE     (Joystick)
   0xA1, 0x01,                    // COLLECTION(Application)
-  0x85, REPORTID_TOUCH,          //   REPORT_ID (NOSTHID)
-
-  // define the maximum amount of fingers that the device supports
-  0x09, 0x55,                    //   USAGE (Contact Count Maximum)
-  0x25, CONTACT_COUNT_MAXIMUM,   //   LOGICAL_MAXIMUM (CONTACT_COUNT_MAXIMUM)
-  0xB1, 0x02,                    //   FEATURE (Data,Var,Abs)
-
-  // define the actual amount of fingers that are concurrently touching the screen
-  0x09, 0x54,                    //   USAGE (Contact count)
-  0x95, 0x01,                    //   REPORT_COUNT(1)
-  0x75, 0x08,                    //   REPORT_SIZE (8)
-  0x81, 0x02,                    //   INPUT (Data,Var,Abs)
-
-  // declare a finger collection
-  0x09, 0x22,                    //   USAGE (Finger)
-  0xA1, 0x02,                    //   COLLECTION (Logical)
-
-  // declare an identifier for the finger
-  0x09, 0x51,                    //     USAGE (Contact Identifier)
-  0x75, 0x08,                    //     REPORT_SIZE (8)
-  0x95, 0x01,                    //     REPORT_COUNT (1)
-  0x81, 0x02,                    //     INPUT (Data,Var,Abs)
-
-  // declare Tip Switch and In Range
-  0x09, 0x42,                    //     USAGE (Tip Switch)
-  0x09, 0x32,                    //     USAGE (In Range)
-  0x15, 0x00,                    //     LOGICAL_MINIMUM (0)
-  0x25, 0x01,                    //     LOGICAL_MAXIMUM (1)
-  0x75, 0x01,                    //     REPORT_SIZE (1)
-  0x95, 0x02,                    //     REPORT_COUNT(2)
-  0x81, 0x02,                    //     INPUT (Data,Var,Abs)
-
-  // declare the remaining 6 bits of the first data byte as constant -> the driver will ignore them
-  0x95, 0x06,                    //     REPORT_COUNT (6)
-  0x81, 0x03,                    //     INPUT (Cnst,Ary,Abs)
-
-  // define absolute X and Y coordinates of 16 bit each (percent values multiplied with 100)
-  0x05, 0x01,                    //     USAGE_PAGE (Generic Desktop)
-  0x09, 0x30,                    //     Usage (X)
-  0x09, 0x31,                    //     Usage (Y)
-  0x15, 0x00,              //     Logical Minimum (0)
-  0x25, 0x64,              //     Logical Maximum (100)
-  0x35, 0x00,              //     Physical Minimum (0)
-  0x45, 0x64,             //     Physical Maximum (100)
-  0x66, 0x00, 0x00,              //     UNIT (None)
-  0x75, 0x08,                    //     Report Size (8),
-  0x95, 0x02,                    //     Report Count (2),
-  0x81, 0x02,                    //     Input (Data,Var,Abs)
-  0xC0,                          //   END_COLLECTION
-
+  
+  0x85, 0x01,        //   Report ID (1)
+    /* 1 button just so it has an input */
+    0x05, 0x09,        //   Usage Page (Button)
+    0x19, 0x01,        //   Usage Minimum (0x01)
+    0x29, 0x01,        //   Usage Maximum (0x09)
+    0x15, 0x00,        //   Logical Minimum (0)
+    0x25, 0x01,        //   Logical Maximum (1)
+    0x95, 0x01,        //   Report Count (9)
+    0x75, 0x01,        //   Report Size (1)
+    0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
+    /* 7 bits padding */
+    0x95, 0x01,        //   Report Count (1)
+    0x75, 0x07,        //   Report Size (7)
+    0x81, 0x03,        //   Input (Const,Var,Abs,No Wrap,Linear,Preferred State,No Null Position) 
   0x85, 0x02,        //   Report ID (2)   
       // 14 RGB leds (42 leds)
     0x95, 0x2A,        //   REPORT_COUNT
