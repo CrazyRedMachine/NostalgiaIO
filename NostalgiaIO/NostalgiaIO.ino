@@ -93,16 +93,17 @@ void acio_loop(){
    static unsigned long lastReport = 0;
    static uint8_t send_multitouch_cooldown = 2;
    static uint8_t send_lamp_cooldown = 5;
+   bool skip_multitouch = false;
     NOSTHID.poll();
     buttonsState[28] = ( digitalRead(PIN_SERVICE) == LOW ) ? 0xF:0;
     buttonsState[29] = ( digitalRead(PIN_TEST) == LOW ) ? 0xF:0;
     buttonsState[30] = ( digitalRead(PIN_COIN) == LOW ) ? 0xF:0;
-
    send_lamp_cooldown--;
     if (send_lamp_cooldown == 0)
     {
       NOSTHID.updateLeds();
       send_lamp_cooldown = 5;
+      skip_multitouch = true;
     }
   
   static uint8_t initial_mode = digitalRead(PIN_MODE);
@@ -111,13 +112,15 @@ void acio_loop(){
   {    
     if (initial_mode == LOW) {
       /* multitouch */
-      
-      send_multitouch_cooldown--;
-      if (send_multitouch_cooldown == 0)
+      if (!skip_multitouch)
       {
-        NOSTHID.updateState();
-        NOSTHID.sendState();
-        send_multitouch_cooldown = 2;
+       send_multitouch_cooldown--;
+       if (send_multitouch_cooldown == 0)
+       {
+         NOSTHID.updateState();
+         NOSTHID.sendState();
+         send_multitouch_cooldown = 2;
+       }
       }
     }
     else 
