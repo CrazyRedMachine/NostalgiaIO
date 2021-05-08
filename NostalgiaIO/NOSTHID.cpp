@@ -198,7 +198,7 @@ static const uint8_t _hidReportDescriptorTouch[] PROGMEM = {
 
 static const uint8_t _hidReportDescriptorLights[] PROGMEM = {
   0x05, 0x01,                    // USAGE_PAGE(General Desktop)
-  0x09, 0x04,                    // USAGE     (Joystick)
+  0x09, 0x00,                    // USAGE     (Undefined)
   0xA1, 0x01,                    // COLLECTION(Application)
   
   0x85, 0x01,        //   Report ID (1)
