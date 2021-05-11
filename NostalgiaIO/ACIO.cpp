@@ -1,4 +1,4 @@
- #include "ACIO.h"
+#include "ACIO.h"
 //#define ACIO_DEBUG
 
 static uint8_t acio_msg_counter = 1;
@@ -63,17 +63,21 @@ int acio_receive(uint8_t *buffer, int size)
     int result_size = 0;
     int initsize = size;
 
+/* cmd and node for sanity checks */
+uint8_t expected_node = (buffer[0] != 0) ? buffer[0] | 0x80 : 0;
+uint8_t expected_cmd = buffer[2];
+ 
     /* reading a byte stream, we are getting a varying amount
        of 0xAAs before we get a valid message. */
     recv_buf[0] = AC_IO_SOF;
     do {
         read = Serial1.readBytes(recv_buf, 1);
-    } while (recv_buf[0] == AC_IO_SOF);
+    } while (recv_buf[0] != expected_node);
 
     if (read > 0) {
 
         /* recv_buf[0] is already the first byte of the message.
-           now read until nothing's left */
+           now read until nothing's left */              
         recv_size++;
 
         /* important: we have to know how much data we expect
@@ -85,7 +89,21 @@ int acio_receive(uint8_t *buffer, int size)
         while (size > 0) { 
             
             /* we reached the NUMBYTE field, update size accordingly */
-            if (recv_size == 5) { 
+          if (recv_size == 3) {
+              
+              if (recv_buf[recv_size-1] != expected_cmd) 
+              {
+                #ifdef ACIO_DEBUG
+            Serial.println("Invalid expected cmd: ");
+            Serial.print(expected_cmd, HEX);
+            Serial.print(" != ");
+            Serial.print(recv_buf[recv_size - 1], HEX);
+            Serial.println();
+#endif
+            return -1;
+              }
+            }
+            else if (recv_size == 5) { 
 #ifdef ACIO_DEBUG
    Serial.print(" remaining data size is "); 
    Serial.println(recv_buf[recv_size-1]); 
