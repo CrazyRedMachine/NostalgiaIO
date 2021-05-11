@@ -2,7 +2,7 @@
 
 #if defined(_USING_HID)
 
-#define CONTACT_COUNT_MAXIMUM 8
+#define CONTACT_COUNT_MAXIMUM 10
 #define REPORTID_TOUCH        0x01
 
 #define LOWER_PART 90
