@@ -389,7 +389,9 @@ static bool stack_isempty(stack *st)
 #define PIN_MODE A3
 NOSTHID_::NOSTHID_(void) : PluggableUSBModule(1, 1, epType) {
    epType[0] = EP_TYPE_INTERRUPT_IN;
-   
+  
+   pinMode(PIN_MODE, INPUT_PULLUP);
+  
   if (digitalRead(PIN_MODE) == LOW)
    {
     _hidReportDescriptor = _hidReportDescriptorTouch;
