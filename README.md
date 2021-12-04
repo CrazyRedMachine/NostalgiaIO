@@ -4,13 +4,9 @@
 
 Arduino Leonardo firmware and tools for arcade Nostalgia control panel, for official cabinets and home setups
 
-This Readme covers the Arduino firmware only. Find out more about tools in the tools folder readme.
-
 ## Acknowledgments
 
 ACIO layer code based on Bemanitools 5.
-
-Multitouch support is based on Eric Troebs' [Touchy.ino](https://gist.github.com/erictroebs/3e6ca8aa2b9ed06e0b5527fd38dd2c2f) (https://github.com/NicoHood/HID/issues/123)
 
 MIDI support is based on Gary Grewal's [MIDIUSB Library](https://github.com/arduino-libraries/MIDIUSB)
 
@@ -40,17 +36,6 @@ In this mode the panel is a MIDI keyboard (with only white keys). This was mainl
 
 The midi keyboard will work with Synthesia or any midi-enabled music software, but the missing black keys will ruin your experience in most cases.
 
-### Multitouch mode (plug the device while MODE is switched on)
-
-In this mode the panel acts like virtual touchpresses along the bottom edge of the screen. This was mainly developped for use with "Pianista", but might work for other android games too (**note**: this is untested on IOS).
-
-- Presses go along the bottom edge of the screen (10% from bottom edge).
-
-And to facilitate menu navigation in some games :
-
-- While holding TEST button, presses go along the center line (50%)
-- While holding COIN button, presses go along the top edge (10% from top edge)
-
 ### ACIO (native) mode (plug the device while holding SERVICE button)
 
 In this mode the arduino is pretty much disabled and acts as a passthrough, so that the original data can interact with your device. It's useful if you modded your cab hardware and want to use the extended features for other games but still retain native compatibility with Nostalgia.
@@ -71,11 +56,11 @@ The HID lights are accessible in MIDI and Multitouch under win7 but cannot be ac
 There are a lot of cool lightmodes available. 
 You can set the mode either by sending a HID message (see `NostModeSwitch` executable/script), or by **holding service and pressing the leftmost piano key**.
 
-All modes (except rainbow modes) also have several color palettes available which can be switched either by `NostModeSwitch` or by **holding service and pressing the 2nd leftmost piano key**.
+All modes also have several color palettes available which can be switched either by `NostModeSwitch` or by **holding service and pressing the 2nd leftmost piano key**.
 
 Manual mode and palette switch (ie. using service + piano key button) are automatically saved to the Arduino EEPROM.
 
-Most modes also support HID messages and will keep lighting keys (it is disabled in Rainbow mode due to performance issues).
+Most modes also support HID messages and will keep lighting keys.
 
 ##### HID (with reactive fallback)
 
@@ -89,22 +74,6 @@ HID messages OR Pressed keys light them up.
 
 Panel is always lit, pressing a key turns that key lighting off.
 
-##### Interlace
-
-Pressed keys illuminate in 3 different colors.
-
-##### Rainbow
-
-A rainbow wave runs on the panel while pressed keys turn off.
-
-##### Wave
-
-A single-color wave runs on the panel, while a different color illuminates the pressed keys.
-
-##### Breath
-
-The panel periodically illuminates in a fade in fade out effect, while a different color illuminates the pressed keys.
-
 ##### Fade out
 
 Keys light up as you press them then slowly fade out once they are released.
@@ -112,10 +81,6 @@ Keys light up as you press them then slowly fade out once they are released.
 ##### Velocity Fade out
 
 This is like fade out except the color is determined by how hard you press the key.
-
-##### Rainbow fade out
-
-This is like fade out except it draws rainbows (and holding keys makes a great color shifting effect).
 
 ## Pinout
 
@@ -163,10 +128,10 @@ Button | Arduino
 --- | --- 
 MODE | A3
 SERVICE | 5
-TEST (touch center) | 6
-COIN (touch upper) | 7
+TEST | 6
+COIN | 7
 
-Unlike the rest of this pinout, these SERVICE/TEST/COIN/MODE buttons can be freely moved to other GPIO by editing the `#define PIN_*` at the beginning of `NostalgiaIO.ino`, as well as `#define UPPER_PIN` and `#define CENTER_PIN` at the beginning of `NOSTHID.cpp`
+Unlike the rest of this pinout, these SERVICE/TEST/COIN/MODE buttons can be freely moved to other GPIO by editing the `#define PIN_*` at the beginning of `NostalgiaIO.ino`
 
 ## Appendix: spicetools config
 
