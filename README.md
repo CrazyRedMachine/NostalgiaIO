@@ -8,7 +8,7 @@ Arduino Leonardo firmware and tools for arcade Nostalgia control panel, for offi
 
 ACIO layer code based on Bemanitools 5.
 
-MIDI support is based on Gary Grewal's [MIDIUSB Library](https://github.com/arduino-libraries/MIDIUSB)
+~~MIDI support is based on Gary Grewal's [MIDIUSB Library](https://github.com/arduino-libraries/MIDIUSB)~~ This branch replaces the midi mode with a keyboard mode
 
 ## Demo
 
