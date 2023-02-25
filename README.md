@@ -304,7 +304,7 @@ To help speed up the mapping process under spicetools, rather than mapping every
 
 - [Misc.] Write an auto-config app
 - [Misc.] ~~Write a forwarder binary to keypresses so that real cab can play Op3 PC version as well without having to use an arduino.~~
-(Op3 PC version cannot run on Win7 Embedded, so there's no real incentive to do this for now.)
+(DONE, checkout NostMIDI folder)
 
 ## Donation
 
